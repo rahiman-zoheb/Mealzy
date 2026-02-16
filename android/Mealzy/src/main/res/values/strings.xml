@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Mealzy</string>
+    <string name="title_home">Home</string>
+    <string name="title_recipes">Recipes</string>
+    <string name="title_ingredients">Ingredients</string>
+    <string name="title_meal_plan">Meal Plan</string>
+    
+    <!-- Home Screen -->
+    <string name="welcome_message">Welcome to Mealzy!</string>
+    <string name="meal_prep_subtitle">Your personal meal preparation assistant</string>
+    <string name="quick_actions">Quick Actions</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="browse_recipes">Browse Recipes</string>
+    <string name="plan_meals">Plan Meals</string>
+    <string name="todays_meals">Today\'s Meals</string>
+    <string name="no_meals_planned">No meals planned for today</string>
+    
+    <!-- Recipe Screen -->
+    <string name="recipe_suggestions">Recipe Suggestions</string>
+    <string name="search_recipes">Search Recipes</string>
+    <string name="filter_by_meal_type">Filter by meal type</string>
+    <string name="all_meals">All Meals</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="snack">Snack</string>
+    <string name="prep_time">Prep Time: %d min</string>
+    <string name="cook_time">Cook Time: %d min</string>
+    <string name="servings">Servings: %d</string>
+    <string name="difficulty">Difficulty: %s</string>
+    
+    <!-- Ingredients Screen -->
+    <string name="my_ingredients">My Ingredients</string>
+    <string name="add_new_ingredient">Add New Ingredient</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="quantity">Quantity</string>
+    <string name="unit">Unit</string>
+    <string name="category">Category</string>
+    <string name="available">Available</string>
+    <string name="out_of_stock">Out of Stock</string>
+    
+    <!-- Meal Plan Screen -->
+    <string name="weekly_meal_plan">Weekly Meal Plan</string>
+    <string name="add_meal_to_plan">Add Meal to Plan</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_meal_type">Select Meal Type</string>
+    <string name="select_recipe">Select Recipe</string>
+    
+    <!-- Common -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="favorite">Favorite</string>
+    <string name="remove_favorite">Remove Favorite</string>
+</resources>
