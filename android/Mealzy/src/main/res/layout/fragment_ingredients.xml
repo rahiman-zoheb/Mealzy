@@ -66,14 +66,19 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Floating Action Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_add_ingredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_add"
+        android:layout_margin="24dp"
+        android:text="@string/add_ingredient"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:icon="@android:drawable/ic_menu_add"
+        app:iconTint="@android:color/white"
+        app:backgroundTint="@color/primary_color"
         android:contentDescription="@string/add_ingredient"
-        app:tint="@android:color/white" />
+        app:elevation="8dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
