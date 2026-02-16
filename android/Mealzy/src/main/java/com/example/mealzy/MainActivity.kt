@@ -1,52 +1,24 @@
-package com.example.mealzy.model;
+package com.example.mealzy
 
-public class Ingredient {
-    private String name;
-    private String quantity;
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.mealzy.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-    public Ingredient(String name, String quantity) {
-        this.name = name;
-        this.quantity = quantity;
-    }
+class MainActivity : AppCompatActivity() {
 
-    // Getters and setters
-}
+    private lateinit var binding: ActivityMainBinding
 
-package com.example.mealzy.model;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-public enum MealType {
-    BREAKFAST,
-    LUNCH,
-    DINNER
-}
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-package com.example.mealzy.model;
-
-import java.util.List;
-
-public class Recipe {
-    private int id;
-    private String name;
-    private List<Ingredient> ingredients;
-    private String instructions;
-
-    public Recipe(int id, String name, List<Ingredient> ingredients, String instructions) {
-        this.id = id;
-        this.name = name;
-        this.ingredients = ingredients;
-        this.instructions = instructions;
-    }
-
-    // Getters and setters
-}
-
-package com.example.mealzy;
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val bottomNav = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNav?.setupWithNavController(navController)
     }
 }

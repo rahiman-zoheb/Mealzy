@@ -35,7 +35,7 @@ class IngredientsAdapter(
             binding.apply {
                 textIngredientName.text = ingredient.name
                 textQuantity.text = "${ingredient.quantity} ${ingredient.unit}"
-                textCategory.text = ingredient.category
+                chipCategory.text = ingredient.category
                 
                 // Set availability status
                 switchAvailable.isChecked = ingredient.isAvailable
