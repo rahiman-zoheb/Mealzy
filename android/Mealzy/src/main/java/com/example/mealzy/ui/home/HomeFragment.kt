@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mealzy.R
 import com.example.mealzy.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -36,18 +39,16 @@ class HomeFragment : Fragment() {
         binding.apply {
             // Setup quick actions
             cardAddIngredient.setOnClickListener {
-                // Navigate to ingredients fragment
-                // TODO: Implement navigation
+                val bundle = bundleOf("showAddDialog" to true)
+                findNavController().navigate(R.id.action_home_to_ingredients, bundle)
             }
 
             cardBrowseRecipes.setOnClickListener {
-                // Navigate to recipes fragment
-                // TODO: Implement navigation
+                findNavController().navigate(R.id.action_home_to_recipes)
             }
 
             cardPlanMeals.setOnClickListener {
-                // Navigate to meal plan fragment
-                // TODO: Implement navigation
+                findNavController().navigate(R.id.action_home_to_meal_plan)
             }
 
             // Setup RecyclerView for today's meals

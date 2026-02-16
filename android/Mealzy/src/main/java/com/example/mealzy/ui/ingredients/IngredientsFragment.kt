@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mealzy.databinding.FragmentIngredientsBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class IngredientsFragment : Fragment() {
 
@@ -30,6 +29,17 @@ class IngredientsFragment : Fragment() {
 
         setupUI()
         observeViewModel()
+
+        // Check if we should show the add dialog immediately
+        val showAddDialog = arguments?.getBoolean("showAddDialog", false) ?: false
+        if (showAddDialog && savedInstanceState == null) {
+            // Post the dialog show to ensure the fragment is fully created
+            binding.root.post {
+                showAddIngredientDialog()
+            }
+            // Clear the argument to prevent showing again on configuration changes
+            arguments?.putBoolean("showAddDialog", false)
+        }
 
         return root
     }
