@@ -33,8 +33,22 @@ class MealPlanFragment : Fragment() {
     }
 
     private fun setupUI() {
-        binding.recyclerViewMealPlan.layoutManager = LinearLayoutManager(context)
-        
+        binding.recyclerViewMealPlan.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        // Week navigation buttons
+        binding.buttonPrevWeek.setOnClickListener {
+            // TODO: Navigate to previous week
+        }
+
+        binding.buttonNextWeek.setOnClickListener {
+            // TODO: Navigate to next week
+        }
+
+        binding.buttonToday.setOnClickListener {
+            // TODO: Scroll to today
+        }
+
         binding.fabAddMealPlan.setOnClickListener {
             // TODO: Show add meal plan dialog
         }
@@ -42,14 +56,7 @@ class MealPlanFragment : Fragment() {
 
     private fun observeViewModel() {
         mealPlanViewModel.weeklyMealPlan.observe(viewLifecycleOwner) { mealPlans ->
-            // TODO: Update RecyclerView with meal plans
-            if (mealPlans.isEmpty()) {
-                binding.textNoMealPlan.visibility = View.VISIBLE
-                binding.recyclerViewMealPlan.visibility = View.GONE
-            } else {
-                binding.textNoMealPlan.visibility = View.GONE
-                binding.recyclerViewMealPlan.visibility = View.VISIBLE
-            }
+            // TODO: Update RecyclerView with meal plans (calendar day adapter)
         }
     }
 

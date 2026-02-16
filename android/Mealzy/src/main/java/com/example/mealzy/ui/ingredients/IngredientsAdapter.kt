@@ -1,7 +1,9 @@
 package com.example.mealzy.ui.ingredients
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +38,7 @@ class IngredientsAdapter(
                 textIngredientName.text = ingredient.name
                 textQuantity.text = "${ingredient.quantity} ${ingredient.unit}"
                 chipCategory.text = ingredient.category
-                
+
                 // Set availability status
                 switchAvailable.isChecked = ingredient.isAvailable
                 textAvailabilityStatus.text = if (ingredient.isAvailable) {
@@ -45,13 +47,35 @@ class IngredientsAdapter(
                     root.context.getString(R.string.out_of_stock)
                 }
 
-                // Set colors based on availability
-                val textColor = if (ingredient.isAvailable) {
-                    R.color.black
-                } else {
-                    android.R.color.darker_gray
+                // Set category color (both chip and left edge strip)
+                val categoryColor = when (ingredient.category.lowercase()) {
+                    "protein" -> R.color.breakfast_color
+                    "vegetables" -> R.color.lunch_color
+                    "fruits" -> R.color.success_color
+                    "grains" -> R.color.dinner_color
+                    "dairy" -> R.color.info_color
+                    "condiments", "spices" -> R.color.snack_color
+                    else -> R.color.md_theme_light_outline
                 }
-                textIngredientName.setTextColor(root.context.getColor(textColor))
+                chipCategory.setChipBackgroundColorResource(categoryColor)
+
+                // Set left edge color strip
+                viewCategoryColorStrip.setBackgroundColor(
+                    ContextCompat.getColor(root.context, categoryColor)
+                )
+
+                // Show low stock warning badge if quantity is low
+                val quantityValue = ingredient.quantity.toDoubleOrNull() ?: 0.0
+                val isLowStock = when (ingredient.unit.lowercase()) {
+                    "pieces", "pcs" -> quantityValue <= 1.0
+                    "cups", "lbs", "kg", "oz", "grams" -> quantityValue <= 0.5
+                    else -> quantityValue <= 1.0
+                }
+                iconLowStock.visibility = if (isLowStock && ingredient.isAvailable) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
 
                 // Set click listeners
                 root.setOnClickListener {
@@ -61,17 +85,6 @@ class IngredientsAdapter(
                 switchAvailable.setOnCheckedChangeListener { _, _ ->
                     onAvailabilityToggle(ingredient)
                 }
-
-                // Set category chip color based on category
-                val categoryColor = when (ingredient.category.lowercase()) {
-                    "protein" -> R.color.breakfast_color
-                    "vegetables" -> R.color.lunch_color
-                    "grains" -> R.color.dinner_color
-                    "condiments" -> R.color.snack_color
-                    else -> android.R.color.darker_gray
-                }
-                chipCategory.setChipBackgroundColorResource(categoryColor)
-                chipCategory.text = ingredient.category
             }
         }
     }

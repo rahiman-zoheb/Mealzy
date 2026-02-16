@@ -38,17 +38,43 @@ class RecipesAdapter(
                 textCookTime.text = root.context.getString(R.string.cook_time, recipe.cookTimeMinutes)
                 textServings.text = root.context.getString(R.string.servings, recipe.servings)
                 textDifficulty.text = root.context.getString(R.string.difficulty, recipe.difficulty)
-                
+
                 chipMealType.text = recipe.mealType.name.lowercase().replaceFirstChar { it.uppercase() }
-                
-                // Set meal type chip color based on meal type
-                val chipColor = when (recipe.mealType) {
-                    com.example.mealzy.data.model.MealType.BREAKFAST -> R.color.breakfast_color
-                    com.example.mealzy.data.model.MealType.LUNCH -> R.color.lunch_color
-                    com.example.mealzy.data.model.MealType.DINNER -> R.color.dinner_color
-                    com.example.mealzy.data.model.MealType.SNACK -> R.color.snack_color
+
+                // Set meal type chip color and gradient/icon based on meal type
+                val (chipColor, gradientDrawable, iconDrawable) = when (recipe.mealType) {
+                    com.example.mealzy.data.model.MealType.BREAKFAST ->
+                        Triple(R.color.breakfast_color, R.drawable.gradient_breakfast, R.drawable.ic_breakfast_24)
+                    com.example.mealzy.data.model.MealType.LUNCH ->
+                        Triple(R.color.lunch_color, R.drawable.gradient_lunch, R.drawable.ic_lunch_24)
+                    com.example.mealzy.data.model.MealType.DINNER ->
+                        Triple(R.color.dinner_color, R.drawable.gradient_dinner, R.drawable.ic_dinner_24)
+                    com.example.mealzy.data.model.MealType.SNACK ->
+                        Triple(R.color.snack_color, R.drawable.gradient_snack, R.drawable.ic_snack_24)
                 }
+
                 chipMealType.setChipBackgroundColorResource(chipColor)
+                viewGradientBackground.setBackgroundResource(gradientDrawable)
+                iconMealType.setImageResource(iconDrawable)
+
+                // Set favorite icon state
+                val favoriteIcon = if (recipe.isFavorite) {
+                    R.drawable.ic_favorite_filled_24
+                } else {
+                    R.drawable.ic_favorite_border_24
+                }
+                iconFavorite.setImageResource(favoriteIcon)
+
+                // Handle favorite icon click
+                iconFavorite.setOnClickListener {
+                    // Toggle favorite state (will be handled by ViewModel in next update)
+                    val newFavoriteIcon = if (recipe.isFavorite) {
+                        R.drawable.ic_favorite_border_24
+                    } else {
+                        R.drawable.ic_favorite_filled_24
+                    }
+                    iconFavorite.setImageResource(newFavoriteIcon)
+                }
 
                 root.setOnClickListener {
                     onRecipeClick(recipe)

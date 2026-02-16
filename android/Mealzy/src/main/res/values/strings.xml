@@ -13,7 +13,13 @@
     <string name="browse_recipes">Browse Recipes</string>
     <string name="plan_meals">Plan Meals</string>
     <string name="todays_meals">Today\'s Meals</string>
+    <string name="upcoming_meals">Upcoming Meals</string>
     <string name="no_meals_planned">No meals planned for today</string>
+    <string name="no_upcoming_meals">Plan your first meal to get started!</string>
+    <string name="suggested_recipes">You Can Make These</string>
+    <string name="ingredients_count">%d Ingredients</string>
+    <string name="recipes_count">%d Recipes</string>
+    <string name="meals_count">%d Meals</string>
     
     <!-- Recipe Screen -->
     <string name="recipe_suggestions">Recipe Suggestions</string>
@@ -28,6 +34,7 @@
     <string name="cook_time">Cook Time: %d min</string>
     <string name="servings">Servings: %d</string>
     <string name="difficulty">Difficulty: %s</string>
+    <string name="no_recipes_found">No recipes found</string>
     
     <!-- Ingredients Screen -->
     <string name="my_ingredients">My Ingredients</string>
@@ -38,13 +45,21 @@
     <string name="category">Category</string>
     <string name="available">Available</string>
     <string name="out_of_stock">Out of Stock</string>
+    <string name="search_ingredients">Search ingredients</string>
+    <string name="all">All</string>
+    <string name="available_only">Available Only</string>
+    <string name="no_ingredients_found">No ingredients found.\nTap the + button to add your first ingredient!</string>
     
     <!-- Meal Plan Screen -->
     <string name="weekly_meal_plan">Weekly Meal Plan</string>
     <string name="add_meal_to_plan">Add Meal to Plan</string>
+    <string name="add_meal">Add Meal</string>
     <string name="select_date">Select Date</string>
     <string name="select_meal_type">Select Meal Type</string>
     <string name="select_recipe">Select Recipe</string>
+    <string name="previous_week">Previous Week</string>
+    <string name="next_week">Next Week</string>
+    <string name="today">Today</string>
     
     <!-- Common -->
     <string name="save">Save</string>
@@ -56,4 +71,5 @@
     <string name="filter">Filter</string>
     <string name="favorite">Favorite</string>
     <string name="remove_favorite">Remove Favorite</string>
+    <string name="meal_type">Meal Type</string>
 </resources>

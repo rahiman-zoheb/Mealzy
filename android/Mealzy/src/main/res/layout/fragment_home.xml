@@ -12,7 +12,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="80dp"
         tools:context=".ui.home.HomeFragment">
 
         <!-- Welcome Section -->
@@ -20,45 +20,81 @@
             android:id="@+id/text_welcome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/welcome_message"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Good Afternoon!" />
 
         <TextView
             android:id="@+id/text_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:text="@string/meal_prep_subtitle"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_welcome" />
+
+        <!-- Statistics Section -->
+        <LinearLayout
+            android:id="@+id/layout_stats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_subtitle">
+
+            <include
+                android:id="@+id/stat_ingredients"
+                layout="@layout/item_home_stat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp" />
+
+            <include
+                android:id="@+id/stat_recipes"
+                layout="@layout/item_home_stat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp" />
+
+            <include
+                android:id="@+id/stat_meals"
+                layout="@layout/item_home_stat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
 
         <!-- Quick Actions Section -->
         <TextView
             android:id="@+id/text_quick_actions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="28dp"
             android:text="@string/quick_actions"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_subtitle" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_stats" />
 
         <LinearLayout
             android:id="@+id/layout_quick_actions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,14 +109,16 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_add_ingredient"
                     android:layout_width="0dp"
-                    android:layout_height="120dp"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp"
-                    app:rippleColor="@android:color/holo_blue_light">
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="?attr/colorOutlineVariant">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -89,22 +127,24 @@
 
                         <ImageView
                             android:id="@+id/icon_add_ingredient"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:src="@drawable/ic_local_grocery_store_24"
-                            android:tint="@android:color/holo_green_dark"
+                            app:tint="@color/success_color"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:contentDescription="@string/add_ingredient" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="8dp"
                             android:text="@string/add_ingredient"
                             android:gravity="center"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/icon_add_ingredient" />
@@ -116,14 +156,16 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_browse_recipes"
                     android:layout_width="0dp"
-                    android:layout_height="120dp"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="4dp"
-                    app:rippleColor="@android:color/holo_blue_light">
+                    app:cardBackgroundColor="?attr/colorSurface"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="?attr/colorOutlineVariant">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -132,22 +174,24 @@
 
                         <ImageView
                             android:id="@+id/icon_browse_recipes"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:src="@drawable/ic_restaurant_24"
-                            android:tint="@android:color/holo_orange_dark"
+                            app:tint="@color/snack_color"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:contentDescription="@string/browse_recipes" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="8dp"
                             android:text="@string/browse_recipes"
                             android:gravity="center"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/icon_browse_recipes" />
@@ -162,13 +206,15 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_plan_meals"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:rippleColor="@android:color/holo_blue_light">
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -177,22 +223,24 @@
 
                     <ImageView
                         android:id="@+id/icon_plan_meals"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/ic_event_24"
-                        android:tint="@android:color/holo_blue_dark"
+                        app:tint="@color/info_color"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:contentDescription="@string/plan_meals" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="8dp"
                         android:text="@string/plan_meals"
                         android:gravity="center"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/icon_plan_meals" />
@@ -203,43 +251,73 @@
 
         </LinearLayout>
 
-        <!-- Today's Meals Section -->
+        <!-- Upcoming Meals Section -->
         <TextView
-            android:id="@+id/text_todays_meals"
+            android:id="@+id/text_upcoming_meals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/todays_meals"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:layout_marginTop="28dp"
+            android:text="@string/upcoming_meals"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_quick_actions" />
 
         <TextView
-            android:id="@+id/text_no_meals_planned"
+            android:id="@+id/text_no_upcoming_meals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/no_meals_planned"
+            android:layout_marginTop="12dp"
+            android:text="@string/no_upcoming_meals"
             android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_todays_meals" />
+            app:layout_constraintTop_toBottomOf="@+id/text_upcoming_meals" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_todays_meals"
+            android:id="@+id/recyclerView_upcoming_meals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_todays_meals" />
+            app:layout_constraintTop_toBottomOf="@+id/text_upcoming_meals"
+            tools:listitem="@layout/item_recipe" />
+
+        <!-- Suggested Recipes Section -->
+        <TextView
+            android:id="@+id/text_suggested_recipes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/suggested_recipes"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnBackground"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView_upcoming_meals"
+            tools:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_suggested_recipes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_suggested_recipes"
+            tools:listitem="@layout/item_suggested_recipe_horizontal"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

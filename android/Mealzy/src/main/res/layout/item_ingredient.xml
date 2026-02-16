@@ -7,73 +7,112 @@
     android:layout_margin="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:rippleColor="@android:color/holo_blue_light">
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
-        <!-- Ingredient Name -->
-        <TextView
-            android:id="@+id/text_ingredient_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toStartOf="@+id/switch_available"
+        <!-- Category Color Strip (Left Edge) -->
+        <View
+            android:id="@+id/view_category_color_strip"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:background="@color/breakfast_color"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Chicken Breast" />
-
-        <!-- Category Chip -->
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="12sp"
-            app:chipMinHeight="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_ingredient_name"
-            tools:text="Protein" />
-
-        <!-- Quantity -->
-        <TextView
-            android:id="@+id/text_quantity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
-            app:layout_constraintEnd_toStartOf="@+id/text_availability_status"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chip_category"
-            tools:text="2 lbs" />
-
-        <!-- Availability Switch -->
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switch_available"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Availability Status Text -->
-        <TextView
-            android:id="@+id/text_availability_status"
-            android:layout_width="wrap_content"
+        <!-- Content Container -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch_available"
-            tools:text="Available" />
+            app:layout_constraintStart_toEndOf="@+id/view_category_color_strip"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Ingredient Name with Low Stock Badge -->
+            <TextView
+                android:id="@+id/text_ingredient_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/icon_low_stock"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Chicken Breast" />
+
+            <!-- Low Stock Warning Icon -->
+            <ImageView
+                android:id="@+id/icon_low_stock"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/out_of_stock"
+                android:src="@drawable/ic_warning_small"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/text_ingredient_name"
+                app:layout_constraintEnd_toStartOf="@+id/switch_available"
+                app:layout_constraintStart_toEndOf="@+id/text_ingredient_name"
+                app:layout_constraintTop_toTopOf="@+id/text_ingredient_name"
+                tools:visibility="visible" />
+
+            <!-- Availability Switch -->
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Category Chip -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp"
+                app:chipMinHeight="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_ingredient_name"
+                tools:text="Protein" />
+
+            <!-- Quantity -->
+            <TextView
+                android:id="@+id/text_quantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:layout_constraintEnd_toStartOf="@+id/text_availability_status"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chip_category"
+                tools:text="2 lbs" />
+
+            <!-- Availability Status Text -->
+            <TextView
+                android:id="@+id/text_availability_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switch_available"
+                tools:text="Available" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,25 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Material Design 3 - Light Theme Color Palette -->
+
+    <!-- Primary Colors -->
+    <color name="md_theme_light_primary">#6750A4</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#EADDFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#21005D</color>
+
+    <!-- Secondary Colors -->
+    <color name="md_theme_light_secondary">#625B71</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#E8DEF8</color>
+    <color name="md_theme_light_onSecondaryContainer">#1D192B</color>
+
+    <!-- Tertiary Colors -->
+    <color name="md_theme_light_tertiary">#7D5260</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#FFD8E4</color>
+    <color name="md_theme_light_onTertiaryContainer">#31111D</color>
+
+    <!-- Error Colors -->
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+
+    <!-- Background Colors -->
+    <color name="md_theme_light_background">#FFFBFE</color>
+    <color name="md_theme_light_onBackground">#1C1B1F</color>
+
+    <!-- Surface Colors -->
+    <color name="md_theme_light_surface">#FFFBFE</color>
+    <color name="md_theme_light_onSurface">#1C1B1F</color>
+    <color name="md_theme_light_surfaceVariant">#E7E0EC</color>
+    <color name="md_theme_light_onSurfaceVariant">#49454F</color>
+
+    <!-- Outline -->
+    <color name="md_theme_light_outline">#79747E</color>
+    <color name="md_theme_light_outlineVariant">#CAC4D0</color>
+
+    <!-- Meal Type Colors (Light Mode) -->
+    <color name="breakfast_color">#FFE0B347</color>
+    <color name="lunch_color">#4CAF50</color>
+    <color name="dinner_color">#5C6BC0</color>
+    <color name="snack_color">#FF9800</color>
+
+    <!-- Gradient Colors for Recipe Placeholders -->
+    <color name="gradient_breakfast_start">#FFE5B4</color>
+    <color name="gradient_breakfast_end">#FFAB40</color>
+
+    <color name="gradient_lunch_start">#A5D6A7</color>
+    <color name="gradient_lunch_end">#66BB6A</color>
+
+    <color name="gradient_dinner_start">#9FA8DA</color>
+    <color name="gradient_dinner_end">#5C6BC0</color>
+
+    <color name="gradient_snack_start">#FFCC80</color>
+    <color name="gradient_snack_end">#FF8A65</color>
+
+    <!-- Semantic Colors (Light Mode) -->
+    <color name="success_color">#4CAF50</color>
+    <color name="warning_color">#FF9800</color>
+    <color name="info_color">#2196F3</color>
+
+    <!-- Utility Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    
-    <!-- Meal Type Colors -->
-    <color name="breakfast_color">#FFE0B347</color>
-    <color name="lunch_color">#FF4CAF50</color>
-    <color name="dinner_color">#FF3F51B5</color>
-    <color name="snack_color">#FFFF9800</color>
-    
-    <!-- App Theme Colors -->
-    <color name="primary_color">#FF6200EE</color>
-    <color name="primary_dark_color">#FF3700B3</color>
-    <color name="accent_color">#FF03DAC5</color>
-    
-    <!-- Background Colors -->
     <color name="light_gray">#FFF5F5F5</color>
     <color name="medium_gray">#FFEEEEEE</color>
+    <color name="transparent">#00000000</color>
 </resources>

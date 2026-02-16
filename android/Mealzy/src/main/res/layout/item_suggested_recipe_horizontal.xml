@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Gradient Image -->
+        <FrameLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+
+            <View
+                android:id="@+id/view_gradient_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_breakfast" />
+
+            <ImageView
+                android:id="@+id/icon_meal_type"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:alpha="0.9"
+                android:contentDescription="@string/meal_type"
+                android:src="@drawable/ic_breakfast_24" />
+
+        </FrameLayout>
+
+        <!-- Recipe Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/text_recipe_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="Scrambled Eggs" />
+
+            <TextView
+                android:id="@+id/text_ingredient_match"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:textColor="@color/success_color"
+                android:textStyle="bold"
+                tools:text="7/10 ingredients" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -7,106 +7,150 @@
     android:layout_margin="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:rippleColor="@android:color/holo_blue_light">
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
-        <!-- Recipe Name -->
-        <TextView
-            android:id="@+id/text_recipe_name"
+        <!-- Gradient Image Container -->
+        <FrameLayout
+            android:id="@+id/image_container"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:maxLines="2"
-            android:ellipsize="end"
+            android:layout_height="140dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Chicken Stir Fry" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Meal Type Chip -->
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_meal_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="12sp"
-            app:chipMinHeight="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_recipe_name"
-            tools:text="Lunch" />
+            <!-- Gradient Background (set programmatically based on meal type) -->
+            <View
+                android:id="@+id/view_gradient_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_breakfast" />
 
-        <!-- Description -->
-        <TextView
-            android:id="@+id/text_recipe_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
-            android:maxLines="2"
-            android:ellipsize="end"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chip_meal_type"
-            tools:text="Quick and healthy chicken stir fry with vegetables" />
+            <!-- Meal Type Icon (set programmatically based on meal type) -->
+            <ImageView
+                android:id="@+id/icon_meal_type"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:alpha="0.9"
+                android:contentDescription="@string/meal_type"
+                android:src="@drawable/ic_breakfast_24" />
 
-        <!-- Time and Servings Info -->
+            <!-- Favorite Icon (Top Right) -->
+            <ImageView
+                android:id="@+id/icon_favorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|top"
+                android:layout_margin="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/favorite"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_favorite_border_24"
+                app:tint="@android:color/white" />
+
+        </FrameLayout>
+
+        <!-- Content Container with Padding -->
         <LinearLayout
-            android:id="@+id/layout_recipe_info"
+            android:id="@+id/content_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:orientation="vertical"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_recipe_description">
+            app:layout_constraintTop_toBottomOf="@id/image_container">
 
+            <!-- Recipe Name -->
             <TextView
-                android:id="@+id/text_prep_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
-                tools:text="Prep Time: 15 min" />
-
-            <TextView
-                android:id="@+id/text_cook_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray"
-                tools:text="Cook Time: 20 min" />
-
-            <LinearLayout
+                android:id="@+id/text_recipe_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="Chicken Stir Fry" />
+
+            <!-- Meal Type Chip -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_meal_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="12sp"
+                app:chipMinHeight="24dp"
+                tools:text="Lunch" />
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/text_recipe_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Quick and healthy chicken stir fry with vegetables" />
+
+            <!-- Time and Servings Info -->
+            <LinearLayout
+                android:id="@+id/layout_recipe_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/text_servings"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/darker_gray"
-                    tools:text="Servings: 4" />
-
-                <TextView
-                    android:id="@+id/text_difficulty"
+                    android:id="@+id/text_prep_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:textColor="@android:color/darker_gray"
-                    tools:text="Difficulty: Medium" />
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="Prep Time: 15 min" />
+
+                <TextView
+                    android:id="@+id/text_cook_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="Cook Time: 20 min" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/text_servings"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        tools:text="Servings: 4" />
+
+                    <TextView
+                        android:id="@+id/text_difficulty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        tools:text="Difficulty: Medium" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

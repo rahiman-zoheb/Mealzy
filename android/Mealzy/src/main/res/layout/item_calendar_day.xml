@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="160dp"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="12dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/colorOutlineVariant">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Day Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/text_day_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                tools:text="MON" />
+
+            <TextView
+                android:id="@+id/text_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Feb 10" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/colorOutlineVariant" />
+
+        <!-- Meal Slots ScrollView -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp">
+
+                <!-- Breakfast Slot -->
+                <LinearLayout
+                    android:id="@+id/slot_breakfast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/breakfast"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/breakfast_color" />
+
+                    <FrameLayout
+                        android:id="@+id/container_breakfast"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+                <!-- Lunch Slot -->
+                <LinearLayout
+                    android:id="@+id/slot_lunch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lunch"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/lunch_color" />
+
+                    <FrameLayout
+                        android:id="@+id/container_lunch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+                <!-- Dinner Slot -->
+                <LinearLayout
+                    android:id="@+id/slot_dinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dinner"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/dinner_color" />
+
+                    <FrameLayout
+                        android:id="@+id/container_dinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+                <!-- Snack Slot -->
+                <LinearLayout
+                    android:id="@+id/slot_snack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/snack"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/snack_color" />
+
+                    <FrameLayout
+                        android:id="@+id/container_snack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:minHeight="48dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

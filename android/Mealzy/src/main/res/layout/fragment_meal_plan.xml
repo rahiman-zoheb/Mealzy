@@ -17,53 +17,95 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/weekly_meal_plan"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Empty State -->
-        <TextView
-            android:id="@+id/text_no_meal_plan"
+        <!-- Week Navigation -->
+        <LinearLayout
+            android:id="@+id/layout_week_navigation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="No meals planned yet.\nTap the + button to start planning your meals!"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
-            android:visibility="visible"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_weekly_meal_plan" />
+            app:layout_constraintTop_toBottomOf="@+id/text_weekly_meal_plan">
 
-        <!-- Meal Plan RecyclerView -->
+            <ImageButton
+                android:id="@+id/button_prev_week"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/previous_week"
+                android:src="@android:drawable/ic_media_previous"
+                app:tint="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/text_week_range"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="Week of Feb 10 - 16, 2026" />
+
+            <ImageButton
+                android:id="@+id/button_next_week"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/next_week"
+                android:src="@android:drawable/ic_media_next"
+                app:tint="?attr/colorPrimary" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_today"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/today"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Meal Plan RecyclerView (Horizontal - 7 days) -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_meal_plan"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:clipToPadding="false"
+            android:orientation="horizontal"
             android:paddingBottom="80dp"
-            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_weekly_meal_plan" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_week_navigation"
+            tools:listitem="@layout/item_calendar_day" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Floating Action Button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_add_meal_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_add"
+        android:layout_margin="24dp"
+        android:text="@string/add_meal"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        app:icon="@android:drawable/ic_menu_add"
+        app:iconTint="@android:color/white"
+        app:backgroundTint="?attr/colorPrimary"
         android:contentDescription="@string/add_meal_to_plan"
-        app:tint="@android:color/white" />
+        app:elevation="8dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

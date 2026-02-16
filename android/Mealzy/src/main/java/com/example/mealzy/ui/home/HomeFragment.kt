@@ -51,20 +51,24 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_home_to_meal_plan)
             }
 
-            // Setup RecyclerView for today's meals
-            recyclerViewTodaysMeals.layoutManager = LinearLayoutManager(context)
+            // Setup RecyclerView for upcoming meals
+            recyclerViewUpcomingMeals.layoutManager = LinearLayoutManager(context)
+
+            // Setup RecyclerView for suggested recipes (horizontal)
+            recyclerViewSuggestedRecipes.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
     private fun observeViewModel() {
         homeViewModel.todaysMeals.observe(viewLifecycleOwner) { meals ->
-            // Update today's meals RecyclerView
+            // Update upcoming meals RecyclerView
             if (meals.isEmpty()) {
-                binding.textNoMealsPlanned.visibility = View.VISIBLE
-                binding.recyclerViewTodaysMeals.visibility = View.GONE
+                binding.textNoUpcomingMeals.visibility = View.VISIBLE
+                binding.recyclerViewUpcomingMeals.visibility = View.GONE
             } else {
-                binding.textNoMealsPlanned.visibility = View.GONE
-                binding.recyclerViewTodaysMeals.visibility = View.VISIBLE
+                binding.textNoUpcomingMeals.visibility = View.GONE
+                binding.recyclerViewUpcomingMeals.visibility = View.VISIBLE
                 // TODO: Setup adapter with meals
             }
         }

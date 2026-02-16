@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -64,27 +63,20 @@ class RecipesFragment : Fragment() {
             }
         })
 
-        // Setup meal type filter spinner
-        val mealTypes = arrayOf("All Meals", "Breakfast", "Lunch", "Dinner", "Snack")
-        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, mealTypes)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerMealType.adapter = spinnerAdapter
-
-        binding.spinnerMealType.setOnItemSelectedListener(object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedMealType = when (position) {
-                    0 -> null // All meals
-                    1 -> MealType.BREAKFAST
-                    2 -> MealType.LUNCH
-                    3 -> MealType.DINNER
-                    4 -> MealType.SNACK
+        // Setup meal type filter chips
+        binding.chipGroupMealType.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                val selectedMealType = when (checkedIds[0]) {
+                    R.id.chip_all -> null // All meals
+                    R.id.chip_breakfast -> MealType.BREAKFAST
+                    R.id.chip_lunch -> MealType.LUNCH
+                    R.id.chip_dinner -> MealType.DINNER
+                    R.id.chip_snack -> MealType.SNACK
                     else -> null
                 }
                 recipesViewModel.filterByMealType(selectedMealType)
             }
-
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {}
-        })
+        }
     }
 
     private fun observeViewModel() {

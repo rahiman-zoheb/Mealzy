@@ -1,41 +1,62 @@
 # Mealzy - Meal Preparation Planning App
 
-Mealzy is an Android application designed to help users plan and organize their meal preparation. The app allows users to manage ingredients, discover recipes, and create meal plans for efficient meal prep.
+Mealzy is an Android application designed to help users plan and organize their meal preparation. Built with **Material Design 3** and modern Android development practices, the app provides a beautiful and intuitive interface for managing ingredients, discovering recipes, and creating meal plans.
 
-## Features
+## ✨ Features
 
 ### 🏠 Home Screen
-- Welcome message with time-based greetings
-- Quick action cards for easy navigation:
-  - Add Ingredient
-  - Browse Recipes  
-  - Plan Meals
-- Today's meals overview
+- **Time-based greetings** - Dynamic welcome message (Good Morning/Afternoon/Evening)
+- **Statistics dashboard** - Quick view of ingredients, recipes, and weekly meals
+- **Quick action cards** - Easy navigation with modern outline-style cards:
+  - Add Ingredient (green icon)
+  - Browse Recipes (orange icon)
+  - Plan Meals (blue icon)
+- **Upcoming Meals** - View next 3 days of planned meals
+- **Suggested Recipes** - Horizontal carousel showing recipes you can make based on available ingredients
 
 ### 🍳 Recipe Suggestions
-- Browse all recipes with search functionality
-- Filter recipes by meal type (Breakfast, Lunch, Dinner, Snack)
-- Recipe cards showing:
+- **Visual recipe cards** with meal-type gradient placeholders:
+  - Breakfast: Warm yellow-orange gradient with sunrise icon
+  - Lunch: Green gradient with bowl icon
+  - Dinner: Blue-purple gradient with dinner plate icon
+  - Snack: Pink-orange gradient with snack icon
+- **Search functionality** - Real-time recipe search
+- **Chip filters** - Filter by meal type (All, Breakfast, Lunch, Dinner, Snack)
+- **Favorite recipes** - Heart icon to mark favorite recipes
+- **Recipe details** showing:
   - Prep and cook times
   - Servings and difficulty level
   - Meal type categorization
 - Sample recipes included (Scrambled Eggs, Chicken Stir Fry, Spaghetti Bolognese, Greek Yogurt Parfait)
 
 ### 🥕 Ingredients Management
-- Add ingredients with details:
+- **Search & filter** - Find ingredients quickly with real-time search
+- **Filter chips** - View all, available only, or out of stock ingredients
+- **Category grouping** - Ingredients organized by category with section headers
+- **Visual indicators**:
+  - Category color strip on left edge (4dp width)
+  - Low-stock warning badge (yellow "!" icon)
+  - Availability status with toggle switch
+- **Add ingredients** with details:
   - Name and quantity
-  - Unit measurements (pieces, cups, lbs, etc.)
-  - Categories (Protein, Vegetables, Fruits, Grains, etc.)
+  - Unit measurements (pieces, cups, lbs, kg, oz, etc.)
+  - Categories (Protein, Vegetables, Fruits, Grains, Dairy, Condiments, Spices)
   - Availability status
-- Visual ingredient cards with category-based color coding
-- Toggle ingredient availability with switches
-- Sample ingredients included
+- **Swipe to delete** - Easy ingredient removal with undo option
+- Modern card design with proper elevation and theme colors
 
 ### 📅 Meal Plan
-- Weekly meal planning interface
-- Add meals to specific dates and meal types
-- Track meal completion status
-- Floating action button for quick meal additions
+- **Weekly calendar view** - Horizontal scroll through 7 days
+- **Week navigation** - Previous/Next buttons and "Today" quick jump
+- **Daily meal slots** for each day:
+  - Breakfast (yellow label)
+  - Lunch (green label)
+  - Dinner (blue label)
+  - Snack (orange label)
+- **Visual day cards** - Each day shows date and all meal slots
+- **Add meals** - Quick-add button for planning meals
+- **Current day highlight** - Accent color border on today's date
+- Extended FAB with "Add Meal" text
 
 ## Technical Architecture
 
@@ -51,9 +72,14 @@ Mealzy is an Android application designed to help users plan and organize their 
 ### UI Layer
 - **MVVM Architecture** with ViewModels
 - **Navigation Component** for fragment navigation
-- **Material Design 3** components
+- **Material Design 3** - Complete implementation with:
+  - Dynamic color theming (primary, secondary, tertiary)
+  - Dark mode support with night resources
+  - Typography scale and hierarchy
+  - Elevation system with tonal surfaces
 - **View Binding** for type-safe view references
 - **RecyclerView** with DiffUtil for efficient list updates
+- **Modern card designs** - 16dp radius, proper elevation, theme-aware colors
 
 ### Key Components
 - Bottom Navigation for main screen switching
@@ -124,16 +150,40 @@ The app comes with sample data to demonstrate functionality:
 5. Browse sample recipes in the Recipes tab
 6. Create meal plans in the Meal Plan section
 
+## Recent UI/UX Enhancements
+
+### Material Design 3 Implementation
+- ✅ Complete MD3 color system with dark mode support
+- ✅ Typography scale and visual hierarchy improvements
+- ✅ Modern card designs across all screens
+- ✅ Theme-aware colors (`?attr/colorSurface`, etc.)
+
+### Visual Improvements
+- ✅ Recipe gradient placeholders with meal-type icons
+- ✅ Ingredient category color strips and low-stock indicators
+- ✅ Favorite recipe functionality with heart icon
+- ✅ Statistics dashboard on home screen
+- ✅ Suggested recipes carousel based on available ingredients
+
+### UX Enhancements
+- ✅ Chip filters replacing spinners (better touch targets)
+- ✅ Search functionality on recipes and ingredients
+- ✅ Weekly calendar view for meal planning
+- ✅ Week navigation with prev/next/today buttons
+- ✅ Extended FABs with descriptive text labels
+
 ## Future Enhancements
 
 - Recipe import from web/API
-- Shopping list generation
-- Nutritional information
-- Photo support for recipes
-- Meal prep reminders
+- Shopping list generation based on meal plan
+- Nutritional information tracking
+- Photo support for custom recipes
+- Meal prep reminders and notifications
 - Export/share meal plans
-- Dark mode support
+- Recipe ingredient availability percentage
+- Grocery shopping mode with checklist
 
 ---
 
 *Built with ❤️ for meal prep enthusiasts*
+*UI/UX enhanced with Material Design 3 - February 2026*

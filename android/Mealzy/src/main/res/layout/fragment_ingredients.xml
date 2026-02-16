@@ -17,12 +17,67 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/my_ingredients"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Search -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView_ingredients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/search_background"
+            app:queryHint="@string/search_ingredients"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients" />
+
+        <!-- Filter Chips -->
+        <HorizontalScrollView
+            android:id="@+id/scroll_filter_chips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView_ingredients">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_all"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/all" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_available"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/available_only" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_out_of_stock"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/out_of_stock" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
 
         <!-- Progress Bar -->
         <ProgressBar
@@ -33,7 +88,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients" />
+            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips" />
 
         <!-- Empty State -->
         <TextView
@@ -41,14 +96,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="No ingredients added yet.\nTap the + button to add your first ingredient!"
+            android:text="@string/no_ingredients_found"
             android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients" />
+            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips" />
 
         <!-- Ingredients RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -61,7 +116,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients" />
+            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips"
+            tools:listitem="@layout/item_ingredient" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -77,7 +133,7 @@
         android:textStyle="bold"
         app:icon="@android:drawable/ic_menu_add"
         app:iconTint="@android:color/white"
-        app:backgroundTint="@color/primary_color"
+        app:backgroundTint="?attr/colorPrimary"
         android:contentDescription="@string/add_ingredient"
         app:elevation="8dp" />
 

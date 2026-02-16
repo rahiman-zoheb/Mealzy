@@ -13,9 +13,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/recipe_suggestions"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:textAppearance="?attr/textAppearanceHeadlineMedium"
+        android:textColor="?attr/colorOnBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,27 +31,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_recipe_suggestions" />
 
-    <!-- Filter -->
-    <TextView
-        android:id="@+id/text_filter_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/filter_by_meal_type"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView_recipes" />
-
-    <Spinner
-        android:id="@+id/spinner_meal_type"
+    <!-- Filter Chips -->
+    <HorizontalScrollView
+        android:id="@+id/scroll_filter_chips"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text_filter_label"
-        app:layout_constraintTop_toBottomOf="@+id/searchView_recipes" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView_recipes">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup_meal_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_all"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/all_meals" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_breakfast"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/breakfast" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_lunch"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lunch" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_dinner"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dinner" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_snack"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/snack" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
 
     <!-- Progress Bar -->
     <ProgressBar
@@ -63,7 +98,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_meal_type" />
+        app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips" />
 
     <!-- Empty State -->
     <TextView
@@ -71,14 +106,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="No recipes found"
+        android:text="@string/no_recipes_found"
         android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_meal_type" />
+        app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips" />
 
     <!-- Recipes RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -87,10 +122,11 @@
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:clipToPadding="false"
-        android:paddingBottom="16dp"
+        android:paddingBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_meal_type" />
+        app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips"
+        tools:listitem="@layout/item_recipe" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
