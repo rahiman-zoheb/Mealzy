@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="No ingredients added yet.\nTap the + button to add your first ingredient!"
-            android:textAlign="center"
+            android:gravity="center"
             android:textSize="16sp"
             android:textColor="@android:color/darker_gray"
             android:visibility="gone"
