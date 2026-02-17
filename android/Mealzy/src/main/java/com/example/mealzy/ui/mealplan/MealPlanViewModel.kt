@@ -3,13 +3,17 @@ package com.example.mealzy.ui.mealplan
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import com.example.mealzy.data.database.MealzyDatabase
 import com.example.mealzy.data.model.MealPlan
 import com.example.mealzy.data.model.MealType
+import com.example.mealzy.data.model.Recipe
 import com.example.mealzy.data.repository.MealzyRepository
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -20,7 +24,8 @@ data class CalendarDay(
     val dayName: String,
     val dayNumber: Int,
     val isToday: Boolean,
-    val meals: Map<MealType, MealPlan?>
+    val meals: Map<MealType, MealPlan?>,
+    val recipeNames: Map<Long, String> = emptyMap()
 )
 
 class MealPlanViewModel(application: Application) : AndroidViewModel(application) {
@@ -59,27 +64,61 @@ class MealPlanViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    // All recipes for name lookup and recipe picker
+    val allRecipes: LiveData<List<Recipe>> = repository.getAllRecipes()
+
     // Calendar days (7 days for the current week)
-    val calendarDays: LiveData<List<CalendarDay>> = _currentWeekStart.switchMap { weekStart ->
-        val calendar = Calendar.getInstance()
-        calendar.time = weekStart
+    private val _calendarDays = MediatorLiveData<List<CalendarDay>>()
+    val calendarDays: LiveData<List<CalendarDay>> = _calendarDays
 
-        // Calculate week end
-        val weekEnd = Calendar.getInstance()
-        weekEnd.time = weekStart
-        weekEnd.add(Calendar.DAY_OF_YEAR, 7)
-
-        repository.getMealPlansInRange(weekStart, weekEnd.time).map { mealPlans ->
-            buildCalendarDays(weekStart, mealPlans)
-        }
-    }
+    // Tracks the weekly meal plans LiveData so we can swap sources
+    private var weeklyMealsSource: LiveData<List<MealPlan>>? = null
 
     init {
-        // Initialize to current week
+        // Rebuild calendar whenever recipes change (for name display)
+        _calendarDays.addSource(allRecipes) { rebuildCalendar() }
+
+        // Initialize to current week (also triggers first calendar build)
         goToToday()
     }
 
-    private fun buildCalendarDays(weekStart: Date, mealPlans: List<MealPlan>): List<CalendarDay> {
+    private fun rebuildCalendar() {
+        val weekStart = _currentWeekStart.value ?: return
+
+        // Remove old weekly meals source if present
+        weeklyMealsSource?.let { _calendarDays.removeSource(it) }
+
+        val weekEnd = Calendar.getInstance().apply {
+            time = weekStart
+            add(Calendar.DAY_OF_YEAR, 7)
+        }.time
+
+        val newSource = repository.getMealPlansInRange(weekStart, weekEnd)
+        weeklyMealsSource = newSource
+
+        _calendarDays.addSource(newSource) { mealPlans ->
+            val recipeNames = allRecipes.value?.associate { it.id to it.name } ?: emptyMap()
+            _calendarDays.value = buildCalendarDays(weekStart, mealPlans, recipeNames)
+        }
+    }
+
+    fun addMealPlan(mealPlan: MealPlan) {
+        viewModelScope.launch {
+            repository.insertMealPlan(mealPlan)
+        }
+    }
+
+    fun deleteMealPlan(mealPlan: MealPlan) {
+        viewModelScope.launch {
+            repository.deleteMealPlan(mealPlan)
+        }
+    }
+
+    private fun buildCalendarDays(
+        weekStart: Date,
+        mealPlans: List<MealPlan>,
+        recipeNames: Map<Long, String> = emptyMap()
+    ): List<CalendarDay> {
         val days = mutableListOf<CalendarDay>()
         val calendar = Calendar.getInstance()
         calendar.time = weekStart
@@ -113,7 +152,8 @@ class MealPlanViewModel(application: Application) : AndroidViewModel(application
                     dayName = dayNames[dayOfWeek],
                     dayNumber = dayOfMonth,
                     isToday = isToday,
-                    meals = mealsByType
+                    meals = mealsByType,
+                    recipeNames = recipeNames
                 )
             )
 
@@ -144,6 +184,7 @@ class MealPlanViewModel(application: Application) : AndroidViewModel(application
         calendar.time = current
         calendar.add(Calendar.WEEK_OF_YEAR, offset)
         _currentWeekStart.value = calendar.time
+        rebuildCalendar()
     }
 
     fun goToToday() {
@@ -155,5 +196,6 @@ class MealPlanViewModel(application: Application) : AndroidViewModel(application
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
         _currentWeekStart.value = calendar.time
+        rebuildCalendar()
     }
 }

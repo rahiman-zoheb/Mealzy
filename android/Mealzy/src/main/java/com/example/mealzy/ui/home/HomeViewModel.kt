@@ -29,8 +29,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val _stats = MediatorLiveData<HomeStats>()
     val stats: LiveData<HomeStats> = _stats
 
-    // Upcoming meals (next 3 days)
+    // Upcoming meals (next 3 days) with recipe names
     val upcomingMeals: LiveData<List<MealPlan>>
+    val upcomingMealItems: LiveData<List<com.example.mealzy.ui.home.UpcomingMealItem>>
 
     // Suggested recipes (70%+ ingredient match)
     private val _suggestedRecipes = MediatorLiveData<List<RecipeWithIngredientMatch>>()
@@ -57,8 +58,23 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         calendar.add(Calendar.DAY_OF_YEAR, 3)
         val threeDaysLater = calendar.time
 
-        upcomingMeals = repository.getMealPlansInRange(today, threeDaysLater).map { meals ->
-            meals.sortedBy { it.date }.take(3)
+        val upcomingMealsSource = repository.getMealPlansInRange(today, threeDaysLater)
+        upcomingMeals = upcomingMealsSource.map { meals -> meals.sortedBy { it.date }.take(3) }
+
+        val allRecipesForHome = repository.getAllRecipes()
+        upcomingMealItems = upcomingMeals.switchMap { meals ->
+            allRecipesForHome.map { recipes ->
+                val recipeMap = recipes.associateBy { it.id }
+                val dateFormat = java.text.SimpleDateFormat("EEE, MMM d", java.util.Locale.getDefault())
+                meals.mapNotNull { meal ->
+                    val recipe = recipeMap[meal.recipeId] ?: return@mapNotNull null
+                    UpcomingMealItem(
+                        recipeName = recipe.name,
+                        mealType = meal.mealType,
+                        dateLabel = dateFormat.format(meal.date)
+                    )
+                }
+            }
         }
 
         // Setup suggested recipes with real ingredient matching

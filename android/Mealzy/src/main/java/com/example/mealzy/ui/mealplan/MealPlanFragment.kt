@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mealzy.data.model.MealPlan
 import com.example.mealzy.data.model.MealType
+import com.example.mealzy.data.model.Recipe
 import com.example.mealzy.databinding.FragmentMealPlanBinding
 
 class MealPlanFragment : Fragment() {
@@ -19,6 +20,7 @@ class MealPlanFragment : Fragment() {
 
     private lateinit var mealPlanViewModel: MealPlanViewModel
     private lateinit var calendarDayAdapter: CalendarDayAdapter
+    private var availableRecipes: List<Recipe> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,20 +42,10 @@ class MealPlanFragment : Fragment() {
         // Setup calendar RecyclerView
         calendarDayAdapter = CalendarDayAdapter(
             onAddMealClick = { day, mealType ->
-                // TODO: Show recipe picker dialog
-                Toast.makeText(
-                    context,
-                    "Add ${mealType.name.lowercase()} for ${day.dayName}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showAddMealDialog(day.date, mealType)
             },
             onMealClick = { meal ->
-                // TODO: Show meal details/options dialog
-                Toast.makeText(
-                    context,
-                    "Meal clicked: Recipe ID ${meal.recipeId}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showMealOptionsDialog(meal)
             }
         )
 
@@ -78,21 +70,46 @@ class MealPlanFragment : Fragment() {
         }
 
         binding.fabAddMealPlan.setOnClickListener {
-            // TODO: Show add meal plan dialog with date picker
-            Toast.makeText(context, "Add meal plan", Toast.LENGTH_SHORT).show()
+            // Default to today + DINNER when tapping the FAB
+            val today = java.util.Calendar.getInstance().time
+            showAddMealDialog(today, MealType.DINNER)
         }
     }
 
     private fun observeViewModel() {
-        // Observe week range text
         mealPlanViewModel.weekRangeText.observe(viewLifecycleOwner) { weekRange ->
             binding.textWeekRange.text = weekRange
         }
 
-        // Observe calendar days
         mealPlanViewModel.calendarDays.observe(viewLifecycleOwner) { days ->
             calendarDayAdapter.submitList(days)
         }
+
+        mealPlanViewModel.allRecipes.observe(viewLifecycleOwner) { recipes ->
+            availableRecipes = recipes
+        }
+    }
+
+    private fun showAddMealDialog(date: java.util.Date, mealType: MealType) {
+        if (availableRecipes.isEmpty()) {
+            android.widget.Toast.makeText(context, "No recipes available. Add recipes first.", android.widget.Toast.LENGTH_SHORT).show()
+            return
+        }
+        AddMealPlanDialog(date, mealType, availableRecipes) { mealPlan ->
+            mealPlanViewModel.addMealPlan(mealPlan)
+        }.show(parentFragmentManager, "AddMealPlanDialog")
+    }
+
+    private fun showMealOptionsDialog(meal: MealPlan) {
+        val recipeName = availableRecipes.find { it.id == meal.recipeId }?.name ?: "this meal"
+        AlertDialog.Builder(requireContext())
+            .setTitle(recipeName)
+            .setMessage("${meal.servings} serving${if (meal.servings != 1) "s" else ""} · ${meal.mealType.name.lowercase().replaceFirstChar { it.uppercase() }}")
+            .setPositiveButton("Delete") { _, _ ->
+                mealPlanViewModel.deleteMealPlan(meal)
+            }
+            .setNegativeButton("Close", null)
+            .show()
     }
 
     override fun onDestroyView() {

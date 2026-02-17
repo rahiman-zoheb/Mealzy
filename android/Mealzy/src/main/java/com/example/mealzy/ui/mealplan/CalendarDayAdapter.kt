@@ -81,12 +81,16 @@ class CalendarDayAdapter(
             val meal = day.meals[mealType]
 
             if (meal != null) {
-                // Show meal card
+                // Show meal card with recipe name
                 val mealView = LayoutInflater.from(container.context)
                     .inflate(R.layout.item_meal_plan_entry, container, false)
 
-                // TODO: Set meal details (recipe name, time, etc.)
-                // For now, just show a placeholder
+                val recipeName = day.recipeNames[meal.recipeId] ?: "Recipe #${meal.recipeId}"
+                val servingsText = "${meal.servings} serving${if (meal.servings != 1) "s" else ""}"
+
+                mealView.findViewById<android.widget.TextView>(R.id.text_recipe_name).text = recipeName
+                mealView.findViewById<android.widget.TextView>(R.id.text_meal_time).text = servingsText
+
                 mealView.setOnClickListener {
                     onMealClick(meal)
                 }

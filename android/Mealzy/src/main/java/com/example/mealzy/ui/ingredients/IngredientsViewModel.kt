@@ -105,6 +105,18 @@ class IngredientsViewModel : ViewModel() {
         }
     }
 
+    fun updateIngredient(ingredient: Ingredient) {
+        viewModelScope.launch {
+            // TODO: Update in repository
+            val currentList = _allIngredients.value?.toMutableList() ?: return@launch
+            val index = currentList.indexOfFirst { it.id == ingredient.id }
+            if (index != -1) {
+                currentList[index] = ingredient
+                _allIngredients.value = currentList
+            }
+        }
+    }
+
     fun toggleIngredientAvailability(ingredient: Ingredient) {
         viewModelScope.launch {
             // TODO: Update in repository

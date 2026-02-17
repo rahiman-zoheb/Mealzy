@@ -39,8 +39,8 @@ class RecipesFragment : Fragment() {
     private fun setupUI() {
         // Setup RecyclerView
         recipesAdapter = RecipesAdapter { recipe ->
-            // Handle recipe click
-            // TODO: Navigate to recipe detail
+            RecipeDetailBottomSheet.newInstance(recipe)
+                .show(parentFragmentManager, RecipeDetailBottomSheet.TAG)
         }
 
         binding.recyclerViewRecipes.apply {

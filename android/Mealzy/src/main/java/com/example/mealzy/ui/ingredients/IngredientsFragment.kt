@@ -50,8 +50,7 @@ class IngredientsFragment : Fragment() {
         // Setup RecyclerView
         ingredientsAdapter = IngredientsAdapter(
             onIngredientClick = { ingredient ->
-                // Handle ingredient click - show details or edit
-                // TODO: Implement ingredient detail/edit
+                showEditIngredientDialog(ingredient)
             },
             onAvailabilityToggle = { ingredient ->
                 ingredientsViewModel.toggleIngredientAvailability(ingredient)
@@ -114,10 +113,15 @@ class IngredientsFragment : Fragment() {
     }
 
     private fun showAddIngredientDialog() {
-        val dialog = AddIngredientDialog { ingredient ->
+        AddIngredientDialog(onIngredientSaved = { ingredient ->
             ingredientsViewModel.addIngredient(ingredient)
-        }
-        dialog.show(parentFragmentManager, "AddIngredientDialog")
+        }).show(parentFragmentManager, "AddIngredientDialog")
+    }
+
+    private fun showEditIngredientDialog(ingredient: com.example.mealzy.data.model.Ingredient) {
+        AddIngredientDialog(existingIngredient = ingredient, onIngredientSaved = { updated ->
+            ingredientsViewModel.updateIngredient(updated)
+        }).show(parentFragmentManager, "EditIngredientDialog")
     }
 
     override fun onDestroyView() {

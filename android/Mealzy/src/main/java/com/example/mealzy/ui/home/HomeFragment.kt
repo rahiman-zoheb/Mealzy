@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -38,6 +36,7 @@ class HomeFragment : Fragment() {
     }
 
     private lateinit var suggestedRecipesAdapter: SuggestedRecipesAdapter
+    private lateinit var upcomingMealsAdapter: UpcomingMealsAdapter
 
     private fun setupUI() {
         binding.apply {
@@ -74,11 +73,16 @@ class HomeFragment : Fragment() {
             }
 
             // Setup RecyclerView for upcoming meals
-            recyclerViewUpcomingMeals.layoutManager = LinearLayoutManager(context)
+            upcomingMealsAdapter = UpcomingMealsAdapter()
+            recyclerViewUpcomingMeals.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = upcomingMealsAdapter
+            }
 
             // Setup RecyclerView for suggested recipes (horizontal)
             suggestedRecipesAdapter = SuggestedRecipesAdapter { recipeMatch ->
-                // TODO: Navigate to recipe detail
+                com.example.mealzy.ui.recipes.RecipeDetailBottomSheet.newInstance(recipeMatch.recipe)
+                    .show(parentFragmentManager, com.example.mealzy.ui.recipes.RecipeDetailBottomSheet.TAG)
             }
             recyclerViewSuggestedRecipes.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -114,15 +118,15 @@ class HomeFragment : Fragment() {
             }
         }
 
-        // Observe upcoming meals
-        homeViewModel.upcomingMeals.observe(viewLifecycleOwner) { meals ->
-            if (meals.isEmpty()) {
+        // Observe upcoming meals with recipe names
+        homeViewModel.upcomingMealItems.observe(viewLifecycleOwner) { items ->
+            if (items.isEmpty()) {
                 binding.textNoUpcomingMeals.visibility = View.VISIBLE
                 binding.recyclerViewUpcomingMeals.visibility = View.GONE
             } else {
                 binding.textNoUpcomingMeals.visibility = View.GONE
                 binding.recyclerViewUpcomingMeals.visibility = View.VISIBLE
-                // TODO: Setup adapter with meals
+                upcomingMealsAdapter.submitList(items)
             }
         }
 
