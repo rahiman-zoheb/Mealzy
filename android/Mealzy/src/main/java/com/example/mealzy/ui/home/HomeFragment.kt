@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -35,8 +37,15 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    private lateinit var suggestedRecipesAdapter: SuggestedRecipesAdapter
+
     private fun setupUI() {
         binding.apply {
+            // Setup stat card icons
+            statIngredients.iconStat.setImageResource(R.drawable.ic_local_grocery_store_24)
+            statRecipes.iconStat.setImageResource(R.drawable.ic_restaurant_24)
+            statMeals.iconStat.setImageResource(R.drawable.ic_event_24)
+
             // Setup quick actions
             cardAddIngredient.setOnClickListener {
                 val bundle = bundleOf("showAddDialog" to true)
@@ -51,18 +60,62 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_home_to_meal_plan)
             }
 
+            // Setup stat card click listeners
+            statIngredients.root.setOnClickListener {
+                findNavController().navigate(R.id.action_home_to_ingredients)
+            }
+
+            statRecipes.root.setOnClickListener {
+                findNavController().navigate(R.id.action_home_to_recipes)
+            }
+
+            statMeals.root.setOnClickListener {
+                findNavController().navigate(R.id.action_home_to_meal_plan)
+            }
+
             // Setup RecyclerView for upcoming meals
             recyclerViewUpcomingMeals.layoutManager = LinearLayoutManager(context)
 
             // Setup RecyclerView for suggested recipes (horizontal)
-            recyclerViewSuggestedRecipes.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            suggestedRecipesAdapter = SuggestedRecipesAdapter { recipeMatch ->
+                // TODO: Navigate to recipe detail
+            }
+            recyclerViewSuggestedRecipes.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = suggestedRecipesAdapter
+            }
         }
     }
 
     private fun observeViewModel() {
-        homeViewModel.todaysMeals.observe(viewLifecycleOwner) { meals ->
-            // Update upcoming meals RecyclerView
+        // Observe welcome message
+        homeViewModel.welcomeMessage.observe(viewLifecycleOwner) { message ->
+            binding.textWelcome.text = message
+        }
+
+        // Observe stats
+        homeViewModel.stats.observe(viewLifecycleOwner) { stats ->
+            binding.apply {
+                // Update stat card values
+                statIngredients.apply {
+                    textStatNumber.text = stats.ingredientCount.toString()
+                    textStatLabel.text = getString(R.string.title_ingredients)
+                }
+
+                statRecipes.apply {
+                    textStatNumber.text = stats.recipeCount.toString()
+                    textStatLabel.text = getString(R.string.title_recipes)
+                }
+
+                statMeals.apply {
+                    textStatNumber.text = stats.weeklyMealCount.toString()
+                    textStatLabel.text = "Meals This Week"
+                }
+            }
+        }
+
+        // Observe upcoming meals
+        homeViewModel.upcomingMeals.observe(viewLifecycleOwner) { meals ->
             if (meals.isEmpty()) {
                 binding.textNoUpcomingMeals.visibility = View.VISIBLE
                 binding.recyclerViewUpcomingMeals.visibility = View.GONE
@@ -73,8 +126,16 @@ class HomeFragment : Fragment() {
             }
         }
 
-        homeViewModel.welcomeMessage.observe(viewLifecycleOwner) { message ->
-            binding.textWelcome.text = message
+        // Observe suggested recipes
+        homeViewModel.suggestedRecipes.observe(viewLifecycleOwner) { recipes ->
+            if (recipes.isEmpty()) {
+                binding.textSuggestedRecipes.visibility = View.GONE
+                binding.recyclerViewSuggestedRecipes.visibility = View.GONE
+            } else {
+                binding.textSuggestedRecipes.visibility = View.VISIBLE
+                binding.recyclerViewSuggestedRecipes.visibility = View.VISIBLE
+                suggestedRecipesAdapter.submitList(recipes)
+            }
         }
     }
 

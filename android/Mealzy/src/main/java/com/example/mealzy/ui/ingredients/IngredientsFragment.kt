@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mealzy.R
 import com.example.mealzy.databinding.FragmentIngredientsBinding
 
 class IngredientsFragment : Fragment() {
@@ -61,14 +63,36 @@ class IngredientsFragment : Fragment() {
             adapter = ingredientsAdapter
         }
 
+        // Setup SearchView
+        binding.searchViewIngredients.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                ingredientsViewModel.setSearchQuery(newText ?: "")
+                return true
+            }
+        })
+
+        // Setup filter chips
+        binding.chipGroupFilter.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                val selectedMode = when (checkedIds[0]) {
+                    R.id.chip_all -> FilterMode.ALL
+                    R.id.chip_available -> FilterMode.AVAILABLE_ONLY
+                    R.id.chip_out_of_stock -> FilterMode.OUT_OF_STOCK
+                    else -> FilterMode.ALL
+                }
+                ingredientsViewModel.setFilterMode(selectedMode)
+            }
+        }
+
         // Setup FAB
         binding.fabAddIngredient.setOnClickListener {
             // Show add ingredient dialog
             showAddIngredientDialog()
         }
-
-        // Setup category filter (if needed)
-        // TODO: Implement category filter
     }
 
     private fun observeViewModel() {

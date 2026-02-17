@@ -3,6 +3,7 @@ package com.example.mealzy.data.repository
 import androidx.lifecycle.LiveData
 import com.example.mealzy.data.dao.IngredientDao
 import com.example.mealzy.data.dao.RecipeDao
+import com.example.mealzy.data.dao.RecipeIngredientDao
 import com.example.mealzy.data.dao.MealPlanDao
 import com.example.mealzy.data.model.*
 import java.util.Date
@@ -10,6 +11,7 @@ import java.util.Date
 class MealzyRepository(
     private val ingredientDao: IngredientDao,
     private val recipeDao: RecipeDao,
+    private val recipeIngredientDao: RecipeIngredientDao,
     private val mealPlanDao: MealPlanDao
 ) {
     
@@ -51,7 +53,29 @@ class MealzyRepository(
     suspend fun deleteRecipe(recipe: Recipe) = recipeDao.deleteRecipe(recipe)
     
     suspend fun getRecipeById(id: Long): Recipe? = recipeDao.getRecipeById(id)
-    
+
+    // Recipe ingredient operations
+    fun getIngredientsForRecipe(recipeId: Long): LiveData<List<RecipeIngredient>> =
+        recipeIngredientDao.getIngredientsForRecipe(recipeId)
+
+    suspend fun getIngredientsForRecipeSync(recipeId: Long): List<RecipeIngredient> =
+        recipeIngredientDao.getIngredientsForRecipeSync(recipeId)
+
+    suspend fun getAvailableIngredientsForRecipe(recipeId: Long): List<RecipeIngredient> =
+        recipeIngredientDao.getAvailableIngredientsForRecipe(recipeId)
+
+    suspend fun insertRecipeIngredient(recipeIngredient: RecipeIngredient) =
+        recipeIngredientDao.insertRecipeIngredient(recipeIngredient)
+
+    suspend fun insertRecipeIngredients(recipeIngredients: List<RecipeIngredient>) =
+        recipeIngredientDao.insertRecipeIngredients(recipeIngredients)
+
+    suspend fun deleteRecipeIngredient(recipeIngredient: RecipeIngredient) =
+        recipeIngredientDao.deleteRecipeIngredient(recipeIngredient)
+
+    suspend fun deleteAllIngredientsForRecipe(recipeId: Long) =
+        recipeIngredientDao.deleteAllIngredientsForRecipe(recipeId)
+
     // Meal plan operations
     fun getAllMealPlans(): LiveData<List<MealPlan>> = mealPlanDao.getAllMealPlans()
     

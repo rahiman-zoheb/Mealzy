@@ -6,6 +6,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.mealzy.data.dao.IngredientDao
 import com.example.mealzy.data.dao.RecipeDao
+import com.example.mealzy.data.dao.RecipeIngredientDao
 import com.example.mealzy.data.dao.MealPlanDao
 import com.example.mealzy.data.model.*
 import java.util.Date
@@ -22,9 +23,10 @@ import java.util.Date
 )
 @TypeConverters(Converters::class)
 abstract class MealzyDatabase : RoomDatabase() {
-    
+
     abstract fun ingredientDao(): IngredientDao
     abstract fun recipeDao(): RecipeDao
+    abstract fun recipeIngredientDao(): RecipeIngredientDao
     abstract fun mealPlanDao(): MealPlanDao
     
     companion object {

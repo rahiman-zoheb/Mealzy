@@ -20,6 +20,7 @@
     <string name="ingredients_count">%d Ingredients</string>
     <string name="recipes_count">%d Recipes</string>
     <string name="meals_count">%d Meals</string>
+    <string name="ingredient_match">%d/%d ingredients</string>
     
     <!-- Recipe Screen -->
     <string name="recipe_suggestions">Recipe Suggestions</string>
