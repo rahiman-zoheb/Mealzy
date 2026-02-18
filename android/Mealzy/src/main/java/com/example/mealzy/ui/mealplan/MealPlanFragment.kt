@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mealzy.data.model.MealPlan
 import com.example.mealzy.data.model.MealType
 import com.example.mealzy.data.model.Recipe
@@ -71,6 +72,16 @@ class MealPlanFragment : Fragment() {
             val today = java.util.Calendar.getInstance().time
             showAddMealDialog(today, MealType.DINNER)
         }
+
+        binding.recyclerViewMealPlan.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dx > 4 && binding.fabAddMealPlan.isExtended) {
+                    binding.fabAddMealPlan.shrink()
+                } else if (dx < -4 && !binding.fabAddMealPlan.isExtended) {
+                    binding.fabAddMealPlan.extend()
+                }
+            }
+        })
     }
 
     private fun observeViewModel() {

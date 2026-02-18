@@ -83,6 +83,16 @@ class IngredientsFragment : Fragment() {
 
         binding.fabAddIngredient.setOnClickListener { showAddIngredientDialog() }
 
+        binding.recyclerViewIngredients.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 4 && binding.fabAddIngredient.isExtended) {
+                    binding.fabAddIngredient.shrink()
+                } else if (dy < -4 && !binding.fabAddIngredient.isExtended) {
+                    binding.fabAddIngredient.extend()
+                }
+            }
+        })
+
         setupSwipeActions()
     }
 
