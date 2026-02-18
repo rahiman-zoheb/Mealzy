@@ -10,7 +10,8 @@ import com.example.mealzy.data.model.Recipe
 import com.example.mealzy.databinding.ItemRecipeBinding
 
 class RecipesAdapter(
-    private val onRecipeClick: (Recipe) -> Unit
+    private val onRecipeClick: (Recipe) -> Unit,
+    private val onFavoriteToggle: (Recipe) -> Unit
 ) : ListAdapter<Recipe, RecipesAdapter.RecipeViewHolder>(RecipeDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
@@ -65,15 +66,9 @@ class RecipesAdapter(
                 }
                 iconFavorite.setImageResource(favoriteIcon)
 
-                // Handle favorite icon click
+                // Handle favorite icon click — persisted via ViewModel
                 iconFavorite.setOnClickListener {
-                    // Toggle favorite state (will be handled by ViewModel in next update)
-                    val newFavoriteIcon = if (recipe.isFavorite) {
-                        R.drawable.ic_favorite_border_24
-                    } else {
-                        R.drawable.ic_favorite_filled_24
-                    }
-                    iconFavorite.setImageResource(newFavoriteIcon)
+                    onFavoriteToggle(recipe)
                 }
 
                 root.setOnClickListener {

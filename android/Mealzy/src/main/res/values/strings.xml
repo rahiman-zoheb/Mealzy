@@ -62,6 +62,13 @@
     <string name="next_week">Next Week</string>
     <string name="today">Today</string>
     
+    <!-- Recipe Detail -->
+    <string name="ingredients">Ingredients</string>
+    <string name="ingredients_available">%1$d/%2$d available</string>
+    <string name="about">About</string>
+    <string name="instructions">Instructions</string>
+    <string name="time_minutes">%d min</string>
+
     <!-- Common -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>

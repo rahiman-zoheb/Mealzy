@@ -6,6 +6,7 @@ import com.example.mealzy.data.dao.RecipeDao
 import com.example.mealzy.data.dao.RecipeIngredientDao
 import com.example.mealzy.data.dao.MealPlanDao
 import com.example.mealzy.data.model.*
+import com.example.mealzy.data.model.RecipeIngredientDetail
 import java.util.Date
 
 class MealzyRepository(
@@ -57,6 +58,12 @@ class MealzyRepository(
     // Recipe ingredient operations
     fun getIngredientsForRecipe(recipeId: Long): LiveData<List<RecipeIngredient>> =
         recipeIngredientDao.getIngredientsForRecipe(recipeId)
+
+    fun getIngredientDetailsForRecipe(recipeId: Long): LiveData<List<RecipeIngredientDetail>> =
+        recipeIngredientDao.getIngredientDetailsForRecipe(recipeId)
+
+    suspend fun toggleFavorite(recipe: Recipe) =
+        recipeDao.updateRecipe(recipe.copy(isFavorite = !recipe.isFavorite))
 
     suspend fun getIngredientsForRecipeSync(recipeId: Long): List<RecipeIngredient> =
         recipeIngredientDao.getIngredientsForRecipeSync(recipeId)

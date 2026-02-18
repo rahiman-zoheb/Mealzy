@@ -38,10 +38,15 @@ class RecipesFragment : Fragment() {
 
     private fun setupUI() {
         // Setup RecyclerView
-        recipesAdapter = RecipesAdapter { recipe ->
-            RecipeDetailBottomSheet.newInstance(recipe)
-                .show(parentFragmentManager, RecipeDetailBottomSheet.TAG)
-        }
+        recipesAdapter = RecipesAdapter(
+            onRecipeClick = { recipe ->
+                RecipeDetailBottomSheet.newInstance(recipe)
+                    .show(parentFragmentManager, RecipeDetailBottomSheet.TAG)
+            },
+            onFavoriteToggle = { recipe ->
+                recipesViewModel.toggleFavorite(recipe)
+            }
+        )
 
         binding.recyclerViewRecipes.apply {
             layoutManager = GridLayoutManager(context, 2)
@@ -92,9 +97,6 @@ class RecipesFragment : Fragment() {
             }
         }
 
-        recipesViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
     }
 
     override fun onDestroyView() {
