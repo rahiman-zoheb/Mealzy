@@ -76,6 +76,8 @@
     <string name="time_minutes">%d min</string>
 
     <!-- Common -->
+    <string name="ingredient_deleted">%s deleted</string>
+    <string name="undo">Undo</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
