@@ -107,9 +107,6 @@ class IngredientsFragment : Fragment() {
             }
         }
 
-        ingredientsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
     }
 
     private fun showAddIngredientDialog() {

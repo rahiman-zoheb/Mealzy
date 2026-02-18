@@ -55,12 +55,18 @@
     <string name="weekly_meal_plan">Weekly Meal Plan</string>
     <string name="add_meal_to_plan">Add Meal to Plan</string>
     <string name="add_meal">Add Meal</string>
+    <string name="add_to_plan">Add to Plan</string>
+    <string name="add_meal_title">Add %s</string>
     <string name="select_date">Select Date</string>
     <string name="select_meal_type">Select Meal Type</string>
     <string name="select_recipe">Select Recipe</string>
     <string name="previous_week">Previous Week</string>
     <string name="next_week">Next Week</string>
     <string name="today">Today</string>
+    <string name="servings_label">Servings</string>
+    <string name="servings_count">%d servings</string>
+    <string name="view_recipe_details">View Recipe Details</string>
+    <string name="delete_from_plan">Delete from Plan</string>
     
     <!-- Recipe Detail -->
     <string name="ingredients">Ingredients</string>
