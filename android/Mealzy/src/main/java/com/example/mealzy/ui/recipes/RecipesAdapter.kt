@@ -1,5 +1,6 @@
 package com.example.mealzy.ui.recipes
 
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -68,6 +69,7 @@ class RecipesAdapter(
 
                 // Handle favorite icon click — persisted via ViewModel
                 iconFavorite.setOnClickListener {
+                    it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                     onFavoriteToggle(recipe)
                 }
 

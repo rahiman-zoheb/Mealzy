@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +73,8 @@ class IngredientsFragment : Fragment() {
             }
         })
 
-        binding.chipGroupFilter.setOnCheckedStateChangeListener { _, checkedIds ->
+        binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedIds ->
+            group.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             if (checkedIds.isNotEmpty()) {
                 val selectedMode = when (checkedIds[0]) {
                     R.id.chip_all -> FilterMode.ALL
@@ -84,7 +86,10 @@ class IngredientsFragment : Fragment() {
             }
         }
 
-        binding.fabAddIngredient.setOnClickListener { showAddIngredientDialog() }
+        binding.fabAddIngredient.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            showAddIngredientDialog()
+        }
 
         binding.recyclerViewIngredients.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -127,6 +132,7 @@ class IngredientsFragment : Fragment() {
 
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
+                        viewHolder.itemView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                         ingredientsViewModel.deleteIngredient(ingredient)
                         Snackbar.make(
                             binding.root,
@@ -140,6 +146,7 @@ class IngredientsFragment : Fragment() {
                             .show()
                     }
                     ItemTouchHelper.RIGHT -> {
+                        viewHolder.itemView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                         ingredientsViewModel.toggleIngredientAvailability(ingredient)
                         ingredientsAdapter.notifyItemChanged(position)
                     }

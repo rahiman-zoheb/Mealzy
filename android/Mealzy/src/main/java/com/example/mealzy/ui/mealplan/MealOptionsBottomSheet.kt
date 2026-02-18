@@ -1,6 +1,7 @@
 package com.example.mealzy.ui.mealplan
 
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,11 +46,13 @@ class MealOptionsBottomSheet(
         binding.textServingsInfo.text = getString(R.string.servings_count, meal.servings)
 
         binding.optionViewDetails.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             dismiss()
             onViewDetails(recipe)
         }
 
         binding.optionDelete.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
             onDelete(meal)
             dismiss()
         }

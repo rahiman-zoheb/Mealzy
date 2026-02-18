@@ -1,6 +1,7 @@
 package com.example.mealzy.ui.recipes
 
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +73,8 @@ class RecipesFragment : Fragment() {
         })
 
         // Setup meal type filter chips
-        binding.chipGroupMealType.setOnCheckedStateChangeListener { _, checkedIds ->
+        binding.chipGroupMealType.setOnCheckedStateChangeListener { group, checkedIds ->
+            group.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             if (checkedIds.isNotEmpty()) {
                 val selectedMealType = when (checkedIds[0]) {
                     R.id.chip_all -> null // All meals

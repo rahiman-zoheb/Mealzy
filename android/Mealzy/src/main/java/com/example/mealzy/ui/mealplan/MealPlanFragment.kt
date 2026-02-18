@@ -1,6 +1,7 @@
 package com.example.mealzy.ui.mealplan
 
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,19 +60,23 @@ class MealPlanFragment : Fragment() {
         }
 
         binding.buttonPrevWeek.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             mealPlanViewModel.navigateWeek(-1)
         }
 
         binding.buttonNextWeek.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             mealPlanViewModel.navigateWeek(1)
         }
 
         binding.buttonToday.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             mealPlanViewModel.goToToday()
             binding.recyclerViewMealPlan.scrollToPosition(0)
         }
 
         binding.fabAddMealPlan.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             val today = java.util.Calendar.getInstance().time
             showAddMealDialog(today, MealType.DINNER)
         }

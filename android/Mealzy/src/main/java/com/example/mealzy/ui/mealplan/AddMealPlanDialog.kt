@@ -2,6 +2,7 @@ package com.example.mealzy.ui.mealplan
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,12 +98,14 @@ class AddMealPlanDialog(
     private fun setupServingsStepper() {
         binding.textServingsCount.text = servingsCount.toString()
         binding.btnServingsMinus.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             if (servingsCount > 1) {
                 servingsCount--
                 binding.textServingsCount.text = servingsCount.toString()
             }
         }
         binding.btnServingsPlus.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             servingsCount++
             binding.textServingsCount.text = servingsCount.toString()
         }
@@ -110,6 +113,7 @@ class AddMealPlanDialog(
 
     private fun setupAddButton() {
         binding.btnAddToPlan.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             val recipe = selectedRecipe
             if (recipe == null) {
                 Toast.makeText(context, getString(R.string.select_recipe), Toast.LENGTH_SHORT).show()
@@ -183,6 +187,7 @@ class AddMealPlanDialog(
                 binding.iconSelected.visibility = if (isSelected) View.VISIBLE else View.GONE
 
                 binding.root.setOnClickListener {
+                    it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
                     onSelected(recipe)
                     setSelected(recipe)
                 }
