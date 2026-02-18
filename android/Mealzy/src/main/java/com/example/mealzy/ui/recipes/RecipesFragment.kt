@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mealzy.R
 import com.example.mealzy.data.model.MealType
 import com.example.mealzy.databinding.FragmentRecipesBinding
+import com.google.android.material.transition.MaterialFadeThrough
 
 class RecipesFragment : Fragment() {
 
@@ -25,6 +26,8 @@ class RecipesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
         recipesViewModel = ViewModelProvider(this)[RecipesViewModel::class.java]
 
         _binding = FragmentRecipesBinding.inflate(inflater, container, false)

@@ -13,6 +13,7 @@ import com.example.mealzy.data.model.MealPlan
 import com.example.mealzy.data.model.MealType
 import com.example.mealzy.data.model.Recipe
 import com.example.mealzy.databinding.FragmentMealPlanBinding
+import com.google.android.material.transition.MaterialFadeThrough
 import com.example.mealzy.ui.recipes.RecipeDetailBottomSheet
 
 class MealPlanFragment : Fragment() {
@@ -29,6 +30,8 @@ class MealPlanFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
         mealPlanViewModel = ViewModelProvider(this)[MealPlanViewModel::class.java]
 
         _binding = FragmentMealPlanBinding.inflate(inflater, container, false)

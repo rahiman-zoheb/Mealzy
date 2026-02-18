@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mealzy.R
 import com.example.mealzy.databinding.FragmentHomeBinding
+import com.google.android.material.transition.MaterialFadeThrough
 
 class HomeFragment : Fragment() {
 
@@ -24,6 +25,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)

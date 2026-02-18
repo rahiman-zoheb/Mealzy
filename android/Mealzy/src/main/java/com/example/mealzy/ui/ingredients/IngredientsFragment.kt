@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mealzy.R
 import com.example.mealzy.databinding.FragmentIngredientsBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 
 class IngredientsFragment : Fragment() {
 
@@ -31,6 +32,8 @@ class IngredientsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
         ingredientsViewModel = ViewModelProvider(this)[IngredientsViewModel::class.java]
 
         _binding = FragmentIngredientsBinding.inflate(inflater, container, false)
