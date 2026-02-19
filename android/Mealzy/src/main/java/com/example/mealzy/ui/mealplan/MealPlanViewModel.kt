@@ -43,6 +43,12 @@ class MealPlanViewModel(application: Application) : AndroidViewModel(application
     private val _currentWeekStart = MutableLiveData<Date>()
     val currentWeekStart: LiveData<Date> = _currentWeekStart
 
+    private val _selectedDate = MutableLiveData<Date>()
+    val selectedDate: LiveData<Date> = _selectedDate
+
+    private val _selectedDayDetail = MediatorLiveData<CalendarDay?>()
+    val selectedDayDetail: LiveData<CalendarDay?> = _selectedDayDetail
+
     // Week range text (e.g., "Week of Feb 10 - 16, 2026")
     val weekRangeText: LiveData<String> = _currentWeekStart.map { weekStart ->
         val calendar = Calendar.getInstance()
@@ -78,8 +84,21 @@ class MealPlanViewModel(application: Application) : AndroidViewModel(application
         // Rebuild calendar whenever recipes change (for name display)
         _calendarDays.addSource(allRecipes) { rebuildCalendar() }
 
+        // Update selected day detail whenever calendar data or selection changes
+        _selectedDayDetail.addSource(_calendarDays) { updateSelectedDayDetail() }
+        _selectedDayDetail.addSource(_selectedDate) { updateSelectedDayDetail() }
+
         // Initialize to current week (also triggers first calendar build)
         goToToday()
+    }
+
+    fun selectDate(date: Date) {
+        _selectedDate.value = date
+    }
+
+    private fun updateSelectedDayDetail() {
+        val date = _selectedDate.value ?: return
+        _selectedDayDetail.value = _calendarDays.value?.find { isSameDay(it.date, date) }
     }
 
     private fun rebuildCalendar() {
@@ -199,17 +218,22 @@ class MealPlanViewModel(application: Application) : AndroidViewModel(application
         calendar.time = current
         calendar.add(Calendar.WEEK_OF_YEAR, offset)
         _currentWeekStart.value = calendar.time
+        // Select first day of the new week
+        _selectedDate.value = calendar.time
         rebuildCalendar()
     }
 
     fun goToToday() {
         val calendar = Calendar.getInstance()
-        // Set to start of week (Sunday)
-        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
+        // Select today's actual date
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
+        _selectedDate.value = calendar.time
+
+        // Set week start to Sunday of current week
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
         _currentWeekStart.value = calendar.time
         rebuildCalendar()
     }

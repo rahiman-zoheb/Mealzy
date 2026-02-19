@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingTop="8dp"
+    android:paddingBottom="10dp"
+    android:paddingStart="2dp"
+    android:paddingEnd="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless">
+
+    <!-- Day abbreviation (MON, TUE …) -->
+    <TextView
+        android:id="@+id/text_day_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.05"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        tools:text="MON" />
+
+    <!-- Day number – circle background applied programmatically for today / selected -->
+    <TextView
+        android:id="@+id/text_day_number"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:gravity="center"
+        android:layout_marginTop="4dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        tools:text="15" />
+
+    <!-- Meal-type indicator dots -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/dot_breakfast"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/bg_meal_dot" />
+
+        <View
+            android:id="@+id/dot_lunch"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/bg_meal_dot" />
+
+        <View
+            android:id="@+id/dot_dinner"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/bg_meal_dot" />
+
+        <View
+            android:id="@+id/dot_snack"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/bg_meal_dot" />
+
+    </LinearLayout>
+
+</LinearLayout>

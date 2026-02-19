@@ -36,4 +36,7 @@ interface IngredientDao {
     
     @Query("SELECT DISTINCT category FROM ingredients ORDER BY category")
     fun getCategories(): LiveData<List<String>>
+
+    @Query("SELECT COUNT(*) FROM ingredients")
+    suspend fun getIngredientCount(): Int
 }

@@ -5,17 +5,21 @@ import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mealzy.data.model.MealPlan
 import com.example.mealzy.data.model.MealType
 import com.example.mealzy.data.model.Recipe
 import com.example.mealzy.databinding.FragmentMealPlanBinding
+import com.example.mealzy.databinding.ItemMealPlanEntryBinding
+import com.example.mealzy.databinding.ItemMealSlotEmptyBinding
 import com.google.android.material.transition.MaterialFadeThrough
 import com.example.mealzy.ui.recipes.RecipeDetailBottomSheet
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class MealPlanFragment : Fragment() {
 
@@ -25,6 +29,7 @@ class MealPlanFragment : Fragment() {
     private lateinit var mealPlanViewModel: MealPlanViewModel
     private lateinit var calendarDayAdapter: CalendarDayAdapter
     private var availableRecipes: List<Recipe> = emptyList()
+    private var selectedDay: CalendarDay? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,17 +50,12 @@ class MealPlanFragment : Fragment() {
     }
 
     private fun setupUI() {
-        calendarDayAdapter = CalendarDayAdapter(
-            onAddMealClick = { day, mealType ->
-                showAddMealDialog(day.date, mealType)
-            },
-            onMealClick = { meal ->
-                showMealOptionsDialog(meal)
-            }
-        )
+        calendarDayAdapter = CalendarDayAdapter { day ->
+            mealPlanViewModel.selectDate(day.date)
+        }
 
         binding.recyclerViewMealPlan.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(context, 7)
             adapter = calendarDayAdapter
         }
 
@@ -72,24 +72,17 @@ class MealPlanFragment : Fragment() {
         binding.buttonToday.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             mealPlanViewModel.goToToday()
-            binding.recyclerViewMealPlan.scrollToPosition(0)
         }
 
         binding.fabAddMealPlan.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            val today = java.util.Calendar.getInstance().time
-            showAddMealDialog(today, MealType.DINNER)
-        }
-
-        binding.recyclerViewMealPlan.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dx > 4 && binding.fabAddMealPlan.isExtended) {
-                    binding.fabAddMealPlan.shrink()
-                } else if (dx < -4 && !binding.fabAddMealPlan.isExtended) {
-                    binding.fabAddMealPlan.extend()
-                }
+            val day = selectedDay
+            if (day != null) {
+                showAddMealDialog(day.date, MealType.DINNER)
+            } else {
+                showAddMealDialog(java.util.Calendar.getInstance().time, MealType.DINNER)
             }
-        })
+        }
     }
 
     private fun observeViewModel() {
@@ -103,6 +96,47 @@ class MealPlanFragment : Fragment() {
 
         mealPlanViewModel.allRecipes.observe(viewLifecycleOwner) { recipes ->
             availableRecipes = recipes
+            // Refresh detail panel if a day is already selected (recipe names may have changed)
+            selectedDay?.let { updateDayDetail(it) }
+        }
+
+        mealPlanViewModel.selectedDate.observe(viewLifecycleOwner) { date ->
+            calendarDayAdapter.setSelectedDate(date)
+        }
+
+        mealPlanViewModel.selectedDayDetail.observe(viewLifecycleOwner) { day ->
+            if (day != null) {
+                selectedDay = day
+                updateDayDetail(day)
+            }
+        }
+    }
+
+    private fun updateDayDetail(day: CalendarDay) {
+        val fmt = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault())
+        binding.textSelectedDay.text = fmt.format(day.date)
+
+        setupDetailSlot(binding.containerDetailBreakfast, day, MealType.BREAKFAST)
+        setupDetailSlot(binding.containerDetailLunch, day, MealType.LUNCH)
+        setupDetailSlot(binding.containerDetailDinner, day, MealType.DINNER)
+        setupDetailSlot(binding.containerDetailSnack, day, MealType.SNACK)
+    }
+
+    private fun setupDetailSlot(container: FrameLayout, day: CalendarDay, mealType: MealType) {
+        container.removeAllViews()
+        val meal = day.meals[mealType]
+        if (meal != null) {
+            val itemBinding = ItemMealPlanEntryBinding.inflate(layoutInflater, container, true)
+            val recipeName = availableRecipes.find { it.id == meal.recipeId }?.name ?: "Unknown"
+            itemBinding.textRecipeName.text = recipeName
+            itemBinding.textMealTime.visibility = View.GONE
+            itemBinding.root.setOnClickListener { showMealOptionsDialog(meal) }
+        } else {
+            val emptyBinding = ItemMealSlotEmptyBinding.inflate(layoutInflater, container, true)
+            emptyBinding.root.setOnClickListener {
+                it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                showAddMealDialog(day.date, mealType)
+            }
         }
     }
 

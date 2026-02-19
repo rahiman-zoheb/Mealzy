@@ -44,10 +44,14 @@ abstract class MealzyDatabase : RoomDatabase() {
                 )
                 .fallbackToDestructiveMigration()
                 .addCallback(object : RoomDatabase.Callback() {
-                    override fun onCreate(db: SupportSQLiteDatabase) {
-                        super.onCreate(db)
+                    override fun onOpen(db: SupportSQLiteDatabase) {
+                        super.onOpen(db)
                         CoroutineScope(Dispatchers.IO).launch {
-                            INSTANCE?.let { seedDatabase(it) }
+                            INSTANCE?.let { database ->
+                                if (database.ingredientDao().getIngredientCount() == 0) {
+                                    seedDatabase(database)
+                                }
+                            }
                         }
                     }
                 })
