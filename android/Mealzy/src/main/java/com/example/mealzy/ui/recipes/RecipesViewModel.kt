@@ -48,6 +48,12 @@ class RecipesViewModel(application: Application) : AndroidViewModel(application)
         _mealTypeFilter.value = mealType
     }
 
+    fun addRecipe(recipe: Recipe) {
+        viewModelScope.launch {
+            repository.insertRecipe(recipe)
+        }
+    }
+
     fun toggleFavorite(recipe: Recipe) {
         viewModelScope.launch {
             repository.toggleFavorite(recipe)

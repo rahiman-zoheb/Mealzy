@@ -15,7 +15,6 @@ data class Recipe(
     val servings: Int,
     val difficulty: String,
     val mealType: MealType,
-    val imageUrl: String? = null,
     val isFavorite: Boolean = false
 )
 

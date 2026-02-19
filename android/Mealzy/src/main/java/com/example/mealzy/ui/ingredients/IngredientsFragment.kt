@@ -119,6 +119,14 @@ class IngredientsFragment : Fragment() {
         ) {
             private val paint = Paint().apply { isAntiAlias = true }
 
+            override fun getSwipeDirs(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                if (viewHolder is IngredientsAdapter.HeaderViewHolder) return 0
+                return super.getSwipeDirs(recyclerView, viewHolder)
+            }
+
             override fun onMove(
                 rv: RecyclerView,
                 vh: RecyclerView.ViewHolder,
@@ -128,22 +136,24 @@ class IngredientsFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.absoluteAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return
-                val ingredient = ingredientsAdapter.currentList[position]
+                val item = ingredientsAdapter.currentList[position]
+                val ingredient = (item as? IngredientListItem.Item)?.ingredient ?: return
 
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         viewHolder.itemView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                        ingredientsViewModel.deleteIngredient(ingredient)
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.ingredient_deleted, ingredient.name),
-                            Snackbar.LENGTH_LONG
-                        )
-                            .setAction(R.string.undo) {
-                                ingredientsViewModel.addIngredient(ingredient)
-                            }
-                            .setAnchorView(binding.fabAddIngredient)
-                            .show()
+                        ingredientsViewModel.deleteIngredientWithLinks(ingredient) { links ->
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.ingredient_deleted, ingredient.name),
+                                Snackbar.LENGTH_LONG
+                            )
+                                .setAction(R.string.undo) {
+                                    ingredientsViewModel.restoreIngredientWithLinks(ingredient, links)
+                                }
+                                .setAnchorView(binding.fabAddIngredient)
+                                .show()
+                        }
                     }
                     ItemTouchHelper.RIGHT -> {
                         viewHolder.itemView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -185,7 +195,7 @@ class IngredientsFragment : Fragment() {
                         val isAvailable = if (pos != RecyclerView.NO_POSITION &&
                             pos < ingredientsAdapter.currentList.size
                         ) {
-                            ingredientsAdapter.currentList[pos].isAvailable
+                            (ingredientsAdapter.currentList[pos] as? IngredientListItem.Item)?.ingredient?.isAvailable ?: true
                         } else true
 
                         paint.color = if (isAvailable) markUnavailableColor else markAvailableColor
@@ -210,12 +220,13 @@ class IngredientsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        ingredientsViewModel.ingredients.observe(viewLifecycleOwner) { ingredients ->
-            ingredientsAdapter.submitList(ingredients)
+        ingredientsViewModel.ingredients.observe(viewLifecycleOwner) { items ->
+            ingredientsAdapter.submitList(items)
+            val hasItems = items.any { it is IngredientListItem.Item }
             binding.textNoIngredients.visibility =
-                if (ingredients.isEmpty()) View.VISIBLE else View.GONE
+                if (!hasItems) View.VISIBLE else View.GONE
             binding.recyclerViewIngredients.visibility =
-                if (ingredients.isEmpty()) View.GONE else View.VISIBLE
+                if (!hasItems) View.GONE else View.VISIBLE
         }
     }
 

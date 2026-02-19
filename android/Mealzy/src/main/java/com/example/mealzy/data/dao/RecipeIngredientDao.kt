@@ -31,6 +31,9 @@ interface RecipeIngredientDao {
     """)
     suspend fun getAvailableIngredientsForRecipe(recipeId: Long): List<RecipeIngredient>
 
+    @Query("SELECT * FROM recipe_ingredients WHERE ingredientId = :ingredientId")
+    suspend fun getRecipeIngredientsForIngredient(ingredientId: Long): List<RecipeIngredient>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipeIngredient(recipeIngredient: RecipeIngredient)
 

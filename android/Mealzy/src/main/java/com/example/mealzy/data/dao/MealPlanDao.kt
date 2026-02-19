@@ -12,14 +12,14 @@ interface MealPlanDao {
     @Query("SELECT * FROM meal_plans ORDER BY date, mealType")
     fun getAllMealPlans(): LiveData<List<MealPlan>>
     
-    @Query("SELECT * FROM meal_plans WHERE date = :date ORDER BY mealType")
-    fun getMealPlansByDate(date: Date): LiveData<List<MealPlan>>
-    
     @Query("SELECT * FROM meal_plans WHERE date BETWEEN :startDate AND :endDate ORDER BY date, mealType")
     fun getMealPlansInRange(startDate: Date, endDate: Date): LiveData<List<MealPlan>>
     
     @Query("SELECT * FROM meal_plans WHERE id = :id")
     suspend fun getMealPlanById(id: Long): MealPlan?
+
+    @Query("SELECT * FROM meal_plans WHERE date BETWEEN :dayStart AND :dayEnd AND mealType = :mealType LIMIT 1")
+    suspend fun getMealPlanByDateAndType(dayStart: Date, dayEnd: Date, mealType: MealType): MealPlan?
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMealPlan(mealPlan: MealPlan): Long

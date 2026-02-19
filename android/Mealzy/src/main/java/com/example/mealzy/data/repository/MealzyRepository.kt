@@ -71,6 +71,9 @@ class MealzyRepository(
     suspend fun getAvailableIngredientsForRecipe(recipeId: Long): List<RecipeIngredient> =
         recipeIngredientDao.getAvailableIngredientsForRecipe(recipeId)
 
+    suspend fun getRecipeIngredientsForIngredient(ingredientId: Long): List<RecipeIngredient> =
+        recipeIngredientDao.getRecipeIngredientsForIngredient(ingredientId)
+
     suspend fun insertRecipeIngredient(recipeIngredient: RecipeIngredient) =
         recipeIngredientDao.insertRecipeIngredient(recipeIngredient)
 
@@ -86,12 +89,12 @@ class MealzyRepository(
     // Meal plan operations
     fun getAllMealPlans(): LiveData<List<MealPlan>> = mealPlanDao.getAllMealPlans()
     
-    fun getMealPlansByDate(date: Date): LiveData<List<MealPlan>> = 
-        mealPlanDao.getMealPlansByDate(date)
-    
     fun getMealPlansInRange(startDate: Date, endDate: Date): LiveData<List<MealPlan>> = 
         mealPlanDao.getMealPlansInRange(startDate, endDate)
     
+    suspend fun getMealPlanByDateAndType(dayStart: Date, dayEnd: Date, mealType: MealType): MealPlan? =
+        mealPlanDao.getMealPlanByDateAndType(dayStart, dayEnd, mealType)
+
     suspend fun insertMealPlan(mealPlan: MealPlan): Long = mealPlanDao.insertMealPlan(mealPlan)
     
     suspend fun updateMealPlan(mealPlan: MealPlan) = mealPlanDao.updateMealPlan(mealPlan)

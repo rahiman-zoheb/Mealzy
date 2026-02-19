@@ -22,6 +22,5 @@ data class MealPlan(
     val recipeId: Long,
     val date: Date,
     val mealType: MealType,
-    val servings: Int,
-    val isCompleted: Boolean = false
+    val servings: Int
 )

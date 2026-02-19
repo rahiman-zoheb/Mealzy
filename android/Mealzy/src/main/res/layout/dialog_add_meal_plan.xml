@@ -1,165 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <!-- Gradient Banner -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp">
-
-            <View
-                android:id="@+id/view_gradient_banner"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/gradient_breakfast"
-                tools:ignore="ContentDescription" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/icon_meal_type"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="@string/meal_type"
-                    android:src="@drawable/ic_breakfast_24"
-                    app:tint="@android:color/white" />
-
-                <TextView
-                    android:id="@+id/text_dialog_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textColor="@android:color/white"
-                    tools:text="Add Breakfast" />
-
-            </LinearLayout>
-
-        </FrameLayout>
-
-        <!-- Content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="vertical">
 
-            <!-- Date subtitle -->
-            <TextView
-                android:id="@+id/text_meal_slot_info"
+            <!-- Gradient Banner -->
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="Monday, Feb 17" />
+                android:layout_height="120dp">
 
-            <!-- Select Recipe label -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/select_recipe"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorOnBackground" />
+                <View
+                    android:id="@+id/view_gradient_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_breakfast"
+                    tools:ignore="ContentDescription" />
 
-            <!-- Recipe list -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_recipes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_meal_picker_recipe" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="?attr/colorOutlineVariant" />
+                    <ImageView
+                        android:id="@+id/icon_meal_type"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/meal_type"
+                        android:src="@drawable/ic_breakfast_24"
+                        app:tint="@android:color/white" />
 
-            <!-- Servings row -->
+                    <TextView
+                        android:id="@+id/text_dialog_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="@android:color/white"
+                        tools:text="Add Breakfast" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Content -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="20dp">
 
+                <!-- Date subtitle -->
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/text_meal_slot_info"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/servings_label"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="Monday, Feb 17" />
+
+                <!-- Select Recipe label -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/select_recipe"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     android:textColor="?attr/colorOnBackground" />
 
-                <!-- Stepper: [-] [count] [+] -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_servings_minus"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:insetLeft="0dp"
-                    android:insetTop="0dp"
-                    android:insetRight="0dp"
-                    android:insetBottom="0dp"
-                    android:minWidth="0dp"
-                    android:padding="0dp"
-                    android:text="−"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/text_servings_count"
-                    android:layout_width="48dp"
+                <!-- Recipe list -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_recipes"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="2"
-                    android:textAppearance="?attr/textAppearanceTitleLarge"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_meal_picker_recipe" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_servings_plus"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:insetLeft="0dp"
-                    android:insetTop="0dp"
-                    android:insetRight="0dp"
-                    android:insetBottom="0dp"
-                    android:minWidth="0dp"
-                    android:padding="0dp"
-                    android:text="+"
-                    android:textSize="18sp" />
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <!-- Servings row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/servings_label"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnBackground" />
+
+                    <!-- Stepper: [-] [count] [+] -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_servings_minus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="0dp"
+                        android:padding="0dp"
+                        android:text="−"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/text_servings_count"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="?attr/colorOnSurface" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_servings_plus"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:insetLeft="0dp"
+                        android:insetTop="0dp"
+                        android:insetRight="0dp"
+                        android:insetBottom="0dp"
+                        android:minWidth="0dp"
+                        android:padding="0dp"
+                        android:text="+"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Add to Plan button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_add_to_plan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/add_to_plan"
-                android:textColor="?attr/colorOnPrimary" />
-
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</androidx.core.widget.NestedScrollView>
+    <!-- Add to Plan button — always visible at bottom -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_to_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/add_to_plan"
+        android:textColor="?attr/colorOnPrimary" />
+
+</LinearLayout>

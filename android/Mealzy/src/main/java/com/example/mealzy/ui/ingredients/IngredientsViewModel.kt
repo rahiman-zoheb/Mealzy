@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.mealzy.data.database.MealzyDatabase
 import com.example.mealzy.data.model.Ingredient
+import com.example.mealzy.data.model.RecipeIngredient
 import com.example.mealzy.data.repository.MealzyRepository
 import kotlinx.coroutines.launch
 
@@ -28,7 +29,7 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
     private val _filterMode = MutableLiveData<FilterMode>(FilterMode.ALL)
     val filterMode: LiveData<FilterMode> = _filterMode
 
-    val ingredients = MediatorLiveData<List<Ingredient>>()
+    val ingredients = MediatorLiveData<List<IngredientListItem>>()
 
     init {
         val database = MealzyDatabase.getDatabase(application)
@@ -67,7 +68,17 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
 
         filtered = filtered.sortedWith(compareBy<Ingredient> { it.category }.thenBy { it.name })
 
-        ingredients.value = filtered
+        val items = mutableListOf<IngredientListItem>()
+        var currentCategory: String? = null
+        for (ingredient in filtered) {
+            if (ingredient.category != currentCategory) {
+                currentCategory = ingredient.category
+                items.add(IngredientListItem.Header(currentCategory))
+            }
+            items.add(IngredientListItem.Item(ingredient))
+        }
+
+        ingredients.value = items
     }
 
     fun setSearchQuery(query: String) {
@@ -99,6 +110,23 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
     fun deleteIngredient(ingredient: Ingredient) {
         viewModelScope.launch {
             repository.deleteIngredient(ingredient)
+        }
+    }
+
+    fun deleteIngredientWithLinks(ingredient: Ingredient, onDeleted: (List<RecipeIngredient>) -> Unit) {
+        viewModelScope.launch {
+            val links = repository.getRecipeIngredientsForIngredient(ingredient.id)
+            repository.deleteIngredient(ingredient)
+            onDeleted(links)
+        }
+    }
+
+    fun restoreIngredientWithLinks(ingredient: Ingredient, links: List<RecipeIngredient>) {
+        viewModelScope.launch {
+            repository.insertIngredient(ingredient)
+            if (links.isNotEmpty()) {
+                repository.insertRecipeIngredients(links)
+            }
         }
     }
 }

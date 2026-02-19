@@ -3,6 +3,7 @@ package com.example.mealzy.ui.ingredients
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,22 +12,58 @@ import com.example.mealzy.R
 import com.example.mealzy.data.model.Ingredient
 import com.example.mealzy.databinding.ItemIngredientBinding
 
+sealed class IngredientListItem {
+    data class Header(val category: String) : IngredientListItem()
+    data class Item(val ingredient: Ingredient) : IngredientListItem()
+}
+
 class IngredientsAdapter(
     private val onIngredientClick: (Ingredient) -> Unit,
     private val onAvailabilityToggle: (Ingredient) -> Unit
-) : ListAdapter<Ingredient, IngredientsAdapter.IngredientViewHolder>(IngredientDiffCallback()) {
+) : ListAdapter<IngredientListItem, RecyclerView.ViewHolder>(IngredientListDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
-        val binding = ItemIngredientBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return IngredientViewHolder(binding)
+    companion object {
+        private const val VIEW_TYPE_HEADER = 0
+        private const val VIEW_TYPE_ITEM = 1
     }
 
-    override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is IngredientListItem.Header -> VIEW_TYPE_HEADER
+            is IngredientListItem.Item -> VIEW_TYPE_ITEM
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            VIEW_TYPE_HEADER -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_ingredient_section_header, parent, false)
+                HeaderViewHolder(view)
+            }
+            else -> {
+                val binding = ItemIngredientBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                IngredientViewHolder(binding)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = getItem(position)) {
+            is IngredientListItem.Header -> (holder as HeaderViewHolder).bind(item.category)
+            is IngredientListItem.Item -> (holder as IngredientViewHolder).bind(item.ingredient)
+        }
+    }
+
+    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textView: TextView = itemView.findViewById(R.id.text_section_header)
+        fun bind(category: String) {
+            textView.text = category
+        }
     }
 
     inner class IngredientViewHolder(
@@ -90,12 +127,18 @@ class IngredientsAdapter(
     }
 }
 
-private class IngredientDiffCallback : DiffUtil.ItemCallback<Ingredient>() {
-    override fun areItemsTheSame(oldItem: Ingredient, newItem: Ingredient): Boolean {
-        return oldItem.id == newItem.id
+private class IngredientListDiffCallback : DiffUtil.ItemCallback<IngredientListItem>() {
+    override fun areItemsTheSame(oldItem: IngredientListItem, newItem: IngredientListItem): Boolean {
+        return when {
+            oldItem is IngredientListItem.Header && newItem is IngredientListItem.Header ->
+                oldItem.category == newItem.category
+            oldItem is IngredientListItem.Item && newItem is IngredientListItem.Item ->
+                oldItem.ingredient.id == newItem.ingredient.id
+            else -> false
+        }
     }
 
-    override fun areContentsTheSame(oldItem: Ingredient, newItem: Ingredient): Boolean {
+    override fun areContentsTheSame(oldItem: IngredientListItem, newItem: IngredientListItem): Boolean {
         return oldItem == newItem
     }
 }

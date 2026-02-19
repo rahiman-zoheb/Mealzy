@@ -87,11 +87,12 @@ class AddMealPlanDialog(
             layoutManager = LinearLayoutManager(context)
             adapter = pickerAdapter
         }
-        pickerAdapter.submitList(recipes)
+        val filteredRecipes = recipes.filter { it.mealType == mealType }.ifEmpty { recipes }
+        pickerAdapter.submitList(filteredRecipes)
         // Pre-select first recipe
-        if (recipes.isNotEmpty()) {
-            selectedRecipe = recipes.first()
-            pickerAdapter.setSelected(recipes.first())
+        if (filteredRecipes.isNotEmpty()) {
+            selectedRecipe = filteredRecipes.first()
+            pickerAdapter.setSelected(filteredRecipes.first())
         }
     }
 

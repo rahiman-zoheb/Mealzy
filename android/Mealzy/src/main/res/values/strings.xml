@@ -36,6 +36,13 @@
     <string name="servings">Servings: %d</string>
     <string name="difficulty">Difficulty: %s</string>
     <string name="no_recipes_found">No recipes found</string>
+    <string name="add_recipe">Add Recipe</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="description">Description</string>
+    <string name="prep_time_label">Prep (min)</string>
+    <string name="cook_time_label">Cook (min)</string>
+    <string name="difficulty_label">Difficulty</string>
+    <string name="recipe_name_required">Recipe name is required</string>
     
     <!-- Ingredients Screen -->
     <string name="my_ingredients">My Ingredients</string>

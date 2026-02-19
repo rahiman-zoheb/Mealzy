@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mealzy.R
 import com.example.mealzy.data.model.MealType
 import com.example.mealzy.databinding.FragmentRecipesBinding
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.MaterialFadeThrough
 
 class RecipesFragment : Fragment() {
@@ -65,10 +66,26 @@ class RecipesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrEmpty()) {
-                    recipesViewModel.clearSearch()
-                }
+                recipesViewModel.searchRecipes(newText ?: "")
                 return true
+            }
+        })
+
+        // Setup FAB
+        binding.fabAddRecipe.setOnClickListener {
+            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            AddRecipeDialog { recipe ->
+                recipesViewModel.addRecipe(recipe)
+            }.show(parentFragmentManager, "AddRecipeDialog")
+        }
+
+        binding.recyclerViewRecipes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 4 && binding.fabAddRecipe.isExtended) {
+                    binding.fabAddRecipe.shrink()
+                } else if (dy < -4 && !binding.fabAddRecipe.isExtended) {
+                    binding.fabAddRecipe.extend()
+                }
             }
         })
 

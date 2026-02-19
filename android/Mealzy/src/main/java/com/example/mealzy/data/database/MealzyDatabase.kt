@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
         RecipeIngredient::class,
         MealPlan::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
