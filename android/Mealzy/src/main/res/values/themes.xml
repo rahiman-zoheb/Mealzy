@@ -59,6 +59,9 @@
         <item name="textAppearanceLabelLarge">@style/TextAppearance.Mealzy.LabelLarge</item>
     </style>
 
+    <!-- Splash screen theme — API 31+ attributes are added in values-v31/themes.xml -->
+    <style name="Theme.Mealzy.Splash" parent="Theme.Mealzy" />
+
     <!-- Typography Styles -->
     <style name="TextAppearance.Mealzy.DisplayLarge" parent="TextAppearance.Material3.DisplayLarge">
         <item name="fontFamily">sans-serif</item>

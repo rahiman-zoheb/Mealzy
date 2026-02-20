@@ -127,7 +127,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/breakfast"
                             android:textColor="@color/breakfast_color"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <FrameLayout
@@ -151,7 +151,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/lunch"
                             android:textColor="@color/lunch_color"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <FrameLayout
@@ -175,7 +175,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/dinner"
                             android:textColor="@color/dinner_color"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <FrameLayout
@@ -198,7 +198,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/snack"
                             android:textColor="@color/snack_color"
-                            android:textSize="13sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <FrameLayout
@@ -218,19 +218,16 @@
     </LinearLayout>
 
     <!-- FAB overlays the card -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_meal_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
+        android:layout_margin="16dp"
         android:contentDescription="@string/add_meal_to_plan"
-        android:text="@string/add_meal"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
         app:backgroundTint="?attr/colorPrimary"
-        app:elevation="8dp"
-        app:icon="@android:drawable/ic_menu_add"
-        app:iconTint="@android:color/white" />
+        app:elevation="6dp"
+        app:srcCompat="@drawable/ic_add_24"
+        app:tint="@android:color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

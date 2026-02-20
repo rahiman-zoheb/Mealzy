@@ -4,17 +4,20 @@
     android:height="48dp"
     android:viewportWidth="48"
     android:viewportHeight="48">
-    
-    <!-- Background circle -->
+
+    <!-- Brand purple background circle -->
     <path
-        android:fillColor="#4CAF50"
+        android:fillColor="#6750A4"
         android:pathData="M24,24m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0" />
-    
-    <!-- Fork and knife icon -->
+
+    <!-- Fork (white) — 2-tine fork, centered at x≈15 -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M19,14h-2v-4h-2v4h-2v-4h-2v4c0,1.1 0.9,2 2,2v14h2V16c1.1,0 2,-0.9 2,-2v-4z"/>
+        android:pathData="M19,14h-2v-4h-2v4h-2v-4h-2v4c0,1.1 0.9,2 2,2v14h2V16c1.1,0 2,-0.9 2,-2v-4z" />
+
+    <!-- Knife (white) — wide blade that tapers to handle, clearly not a "1" -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M31,12v4h2v14h2V12c-2.2,0 -4,1.8 -4,4z"/>
+        android:pathData="M38,8L38,24L34,24L34,38L30,38L30,24C30,14 34,8 38,8Z" />
+
 </vector>

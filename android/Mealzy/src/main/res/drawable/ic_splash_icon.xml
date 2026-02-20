@@ -4,14 +4,18 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Fork + knife scaled to safe-zone, centered at (54,54) — white on purple background -->
+    <!--
+        Splash screen icon — white fork + knife, no background circle.
+        Content centered at (54,54) within the 36dp-radius safe zone.
+        Background colour is provided by windowSplashScreenBackground in values-v31/themes.xml.
+    -->
 
-    <!-- Fork (white) — scaled 1.5× from 48dp viewport, offset to center -->
+    <!-- Fork (white) -->
     <path
         android:fillColor="#FFFFFF"
         android:pathData="M45.75,40.5h-3v-6h-3v6h-3v-6h-3v6c0,1.65 1.35,3 3,3v21h3V43.5c1.65,0 3,-1.35 3,-3v-6z" />
 
-    <!-- Knife (white) — wide blade tapering to handle -->
+    <!-- Knife (white) — wide blade clearly visible -->
     <path
         android:fillColor="#FFFFFF"
         android:pathData="M74.25,31.5L74.25,55.5L68.25,55.5L68.25,76.5L62.25,76.5L62.25,55.5C62.25,40.5 68.25,31.5 74.25,31.5Z" />

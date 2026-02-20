@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ (API 31) splash screen overrides -->
+    <style name="Theme.Mealzy.Splash" parent="Theme.Mealzy">
+        <!-- Full-screen brand purple background instead of the default white -->
+        <item name="android:windowSplashScreenBackground">@color/md_theme_light_primary</item>
+        <!-- White fork+knife icon — no background circle needed (background is above) -->
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
+    </style>
+</resources>
