@@ -38,9 +38,10 @@
 
         <TextView
             android:id="@+id/text_stat_label"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:gravity="center"
             android:textSize="12sp"
             android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="Ingredients" />

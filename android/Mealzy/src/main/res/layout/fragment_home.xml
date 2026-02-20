@@ -54,7 +54,7 @@
                 android:id="@+id/stat_ingredients"
                 layout="@layout/item_home_stat"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="110dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp" />
 
@@ -62,7 +62,7 @@
                 android:id="@+id/stat_recipes"
                 layout="@layout/item_home_stat"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="110dp"
                 android:layout_weight="1"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp" />
@@ -71,7 +71,7 @@
                 android:id="@+id/stat_meals"
                 layout="@layout/item_home_stat"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="110dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp" />
 
