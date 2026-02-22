@@ -68,6 +68,14 @@
     <color name="color_ingredient_unavailable">#F44336</color>
     <color name="color_favorite_active">#E91E63</color>
 
+    <!-- Ingredient Status Chip Colors -->
+    <color name="status_available_bg">#E8F5E9</color>
+    <color name="status_available_fg">#2E7D32</color>
+    <color name="status_low_stock_bg">#FFF3E0</color>
+    <color name="status_low_stock_fg">#E65100</color>
+    <color name="status_out_of_stock_bg">#FFEBEE</color>
+    <color name="status_out_of_stock_fg">#C62828</color>
+
     <!-- Utility Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

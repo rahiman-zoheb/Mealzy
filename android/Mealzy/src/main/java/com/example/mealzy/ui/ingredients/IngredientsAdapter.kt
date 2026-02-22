@@ -1,5 +1,6 @@
 package com.example.mealzy.ui.ingredients
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,12 +79,28 @@ class IngredientsAdapter(
                 textQuantity.text = "${ingredient.quantity} ${ingredient.unit}"
                 chipCategory.text = ingredient.category
 
-                // Single availability signal: card stroke via isActivated
-                root.isActivated = ingredient.isAvailable
-
-                // Availability switch (clear listener first to avoid re-triggers on rebind)
-                switchAvailable.setOnCheckedChangeListener(null)
-                switchAvailable.isChecked = ingredient.isAvailable
+                // Status chip: color-coded availability badge (replaces toggle switch)
+                val (statusLabel, bgColorRes, textColorRes) = when {
+                    !ingredient.isAvailable -> Triple(
+                        root.context.getString(R.string.out_of_stock),
+                        R.color.status_out_of_stock_bg,
+                        R.color.status_out_of_stock_fg
+                    )
+                    item.isLowStock -> Triple(
+                        root.context.getString(R.string.low_stock),
+                        R.color.status_low_stock_bg,
+                        R.color.status_low_stock_fg
+                    )
+                    else -> Triple(
+                        root.context.getString(R.string.available),
+                        R.color.status_available_bg,
+                        R.color.status_available_fg
+                    )
+                }
+                chipStatus.text = statusLabel
+                chipStatus.chipBackgroundColor =
+                    ColorStateList.valueOf(root.context.getColor(bgColorRes))
+                chipStatus.setTextColor(root.context.getColor(textColorRes))
 
                 // Category color chip
                 val categoryColor = when (ingredient.category.lowercase()) {
@@ -97,19 +114,9 @@ class IngredientsAdapter(
                 }
                 chipCategory.setChipBackgroundColorResource(categoryColor)
 
-                // Low stock badge next to quantity (only when available)
-                val showLowStock = item.isLowStock && ingredient.isAvailable
-                iconLowStock.visibility = if (showLowStock) View.VISIBLE else View.GONE
-                textLowStockLabel.visibility = if (showLowStock) View.VISIBLE else View.GONE
-
-                // Click listeners
-                root.setOnClickListener {
-                    onIngredientClick(ingredient)
-                }
-
-                switchAvailable.setOnCheckedChangeListener { _, _ ->
-                    onAvailabilityToggle(ingredient)
-                }
+                // Tap card → edit; tap status chip → toggle available/out-of-stock
+                root.setOnClickListener { onIngredientClick(ingredient) }
+                chipStatus.setOnClickListener { onAvailabilityToggle(ingredient) }
             }
         }
     }
