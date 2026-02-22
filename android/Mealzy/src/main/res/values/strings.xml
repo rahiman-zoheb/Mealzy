@@ -57,6 +57,23 @@
     <string name="all">All</string>
     <string name="available_only">Available Only</string>
     <string name="no_ingredients_found">No ingredients found.\nTap the + button to add your first ingredient!</string>
+    <string name="low_stock">Low stock</string>
+    <string name="chip_all_count">All (%d)</string>
+    <string name="chip_available_count">Available (%d)</string>
+    <string name="chip_out_of_stock_count">Out of Stock (%d)</string>
+    <string name="chip_low_stock_count">Low Stock (%d)</string>
+    <string name="section_count">%d items</string>
+    <string name="error_quantity_positive">Quantity must be greater than zero</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_quantity_required">Quantity is required</string>
+    <string name="empty_pantry_title">Your pantry is empty</string>
+    <string name="empty_pantry_subtitle">Add your first ingredient to get started</string>
+    <string name="empty_search_title">No results for \"%s\"</string>
+    <string name="empty_search_subtitle">Try a different search term</string>
+    <string name="empty_filter_available_title">No available ingredients</string>
+    <string name="empty_filter_out_of_stock_title">Nothing is out of stock</string>
+    <string name="empty_filter_low_stock_title">No low-stock items</string>
+    <string name="empty_filter_subtitle">Change the filter to see more</string>
     
     <!-- Meal Plan Screen -->
     <string name="weekly_meal_plan">Weekly Meal Plan</string>

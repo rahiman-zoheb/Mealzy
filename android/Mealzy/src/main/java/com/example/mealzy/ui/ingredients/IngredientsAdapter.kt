@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,8 +12,8 @@ import com.example.mealzy.data.model.Ingredient
 import com.example.mealzy.databinding.ItemIngredientBinding
 
 sealed class IngredientListItem {
-    data class Header(val category: String) : IngredientListItem()
-    data class Item(val ingredient: Ingredient) : IngredientListItem()
+    data class Header(val category: String, val count: Int) : IngredientListItem()
+    data class Item(val ingredient: Ingredient, val isLowStock: Boolean) : IngredientListItem()
 }
 
 class IngredientsAdapter(
@@ -54,15 +53,17 @@ class IngredientsAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = getItem(position)) {
-            is IngredientListItem.Header -> (holder as HeaderViewHolder).bind(item.category)
-            is IngredientListItem.Item -> (holder as IngredientViewHolder).bind(item.ingredient)
+            is IngredientListItem.Header -> (holder as HeaderViewHolder).bind(item.category, item.count)
+            is IngredientListItem.Item -> (holder as IngredientViewHolder).bind(item)
         }
     }
 
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView: TextView = itemView.findViewById(R.id.text_section_header)
-        fun bind(category: String) {
+        private val countView: TextView = itemView.findViewById(R.id.text_section_count)
+        fun bind(category: String, count: Int) {
             textView.text = category
+            countView.text = itemView.context.getString(R.string.section_count, count)
         }
     }
 
@@ -70,21 +71,21 @@ class IngredientsAdapter(
         private val binding: ItemIngredientBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(ingredient: Ingredient) {
+        fun bind(item: IngredientListItem.Item) {
+            val ingredient = item.ingredient
             binding.apply {
                 textIngredientName.text = ingredient.name
                 textQuantity.text = "${ingredient.quantity} ${ingredient.unit}"
                 chipCategory.text = ingredient.category
 
-                // Set availability status
-                switchAvailable.isChecked = ingredient.isAvailable
-                textAvailabilityStatus.text = if (ingredient.isAvailable) {
-                    root.context.getString(R.string.available)
-                } else {
-                    root.context.getString(R.string.out_of_stock)
-                }
+                // Single availability signal: card stroke via isActivated
+                root.isActivated = ingredient.isAvailable
 
-                // Set category color (both chip and left edge strip)
+                // Availability switch (clear listener first to avoid re-triggers on rebind)
+                switchAvailable.setOnCheckedChangeListener(null)
+                switchAvailable.isChecked = ingredient.isAvailable
+
+                // Category color chip
                 val categoryColor = when (ingredient.category.lowercase()) {
                     "protein" -> R.color.breakfast_color
                     "vegetables" -> R.color.lunch_color
@@ -96,25 +97,12 @@ class IngredientsAdapter(
                 }
                 chipCategory.setChipBackgroundColorResource(categoryColor)
 
-                // Set left edge color strip
-                viewCategoryColorStrip.setBackgroundColor(
-                    ContextCompat.getColor(root.context, categoryColor)
-                )
+                // Low stock badge next to quantity (only when available)
+                val showLowStock = item.isLowStock && ingredient.isAvailable
+                iconLowStock.visibility = if (showLowStock) View.VISIBLE else View.GONE
+                textLowStockLabel.visibility = if (showLowStock) View.VISIBLE else View.GONE
 
-                // Show low stock warning badge if quantity is low
-                val quantityValue = ingredient.quantity.toDoubleOrNull() ?: 0.0
-                val isLowStock = when (ingredient.unit.lowercase()) {
-                    "pieces", "pcs" -> quantityValue <= 1.0
-                    "cups", "lbs", "kg", "oz", "grams" -> quantityValue <= 0.5
-                    else -> quantityValue <= 1.0
-                }
-                iconLowStock.visibility = if (isLowStock && ingredient.isAvailable) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-                // Set click listeners
+                // Click listeners
                 root.setOnClickListener {
                     onIngredientClick(ingredient)
                 }

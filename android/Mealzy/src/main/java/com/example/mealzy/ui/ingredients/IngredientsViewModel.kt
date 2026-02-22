@@ -15,7 +15,16 @@ import kotlinx.coroutines.launch
 enum class FilterMode {
     ALL,
     AVAILABLE_ONLY,
-    OUT_OF_STOCK
+    OUT_OF_STOCK,
+    LOW_STOCK
+}
+
+data class IngredientCounts(val total: Int, val available: Int, val outOfStock: Int, val lowStock: Int)
+
+sealed class EmptyStateVariant {
+    object NoIngredients : EmptyStateVariant()
+    data class NoSearchResults(val query: String) : EmptyStateVariant()
+    data class NoFilterResults(val filter: FilterMode) : EmptyStateVariant()
 }
 
 class IngredientsViewModel(application: Application) : AndroidViewModel(application) {
@@ -31,6 +40,12 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
 
     val ingredients = MediatorLiveData<List<IngredientListItem>>()
 
+    private val _ingredientCounts = MutableLiveData<IngredientCounts>(IngredientCounts(0, 0, 0, 0))
+    val ingredientCounts: LiveData<IngredientCounts> = _ingredientCounts
+
+    private val _emptyStateVariant = MutableLiveData<EmptyStateVariant?>()
+    val emptyStateVariant: LiveData<EmptyStateVariant?> = _emptyStateVariant
+
     init {
         val database = MealzyDatabase.getDatabase(application)
         repository = MealzyRepository(
@@ -44,9 +59,35 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun setupFiltering() {
-        ingredients.addSource(allIngredientsSource) { updateFilteredIngredients() }
+        ingredients.addSource(allIngredientsSource) {
+            updateIngredientCounts(it ?: emptyList())
+            updateFilteredIngredients()
+        }
         ingredients.addSource(_searchQuery) { updateFilteredIngredients() }
         ingredients.addSource(_filterMode) { updateFilteredIngredients() }
+    }
+
+    private fun updateIngredientCounts(allItems: List<Ingredient>) {
+        val total = allItems.size
+        val available = allItems.count { it.isAvailable }
+        val outOfStock = allItems.count { !it.isAvailable }
+        val lowStock = allItems.count { isLowStock(it) && it.isAvailable }
+        _ingredientCounts.value = IngredientCounts(total, available, outOfStock, lowStock)
+    }
+
+    fun isLowStock(ingredient: Ingredient): Boolean {
+        val quantity = ingredient.quantity.toDoubleOrNull() ?: return false
+        return when (ingredient.unit.lowercase()) {
+            "pieces", "pcs"   -> quantity <= 1.0
+            "cups"            -> quantity <= 0.25
+            "lbs", "kg"       -> quantity <= 0.25
+            "oz", "grams"     -> quantity <= 50.0
+            "liters"          -> quantity <= 0.25
+            "ml"              -> quantity <= 100.0
+            "tbsp", "tsp"     -> quantity <= 1.0
+            "bottles", "cans" -> quantity <= 1.0
+            else              -> quantity <= 1.0
+        }
     }
 
     private fun updateFilteredIngredients() {
@@ -63,19 +104,27 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
         filtered = when (mode) {
             FilterMode.AVAILABLE_ONLY -> filtered.filter { it.isAvailable }
             FilterMode.OUT_OF_STOCK -> filtered.filter { !it.isAvailable }
+            FilterMode.LOW_STOCK -> filtered.filter { isLowStock(it) && it.isAvailable }
             FilterMode.ALL -> filtered
         }
 
         filtered = filtered.sortedWith(compareBy<Ingredient> { it.category }.thenBy { it.name })
 
-        val items = mutableListOf<IngredientListItem>()
-        var currentCategory: String? = null
-        for (ingredient in filtered) {
-            if (ingredient.category != currentCategory) {
-                currentCategory = ingredient.category
-                items.add(IngredientListItem.Header(currentCategory))
+        _emptyStateVariant.value = if (filtered.isEmpty()) {
+            when {
+                allItems.isEmpty() -> EmptyStateVariant.NoIngredients
+                query.isNotEmpty() -> EmptyStateVariant.NoSearchResults(query)
+                else -> EmptyStateVariant.NoFilterResults(mode)
             }
-            items.add(IngredientListItem.Item(ingredient))
+        } else null
+
+        val grouped = filtered.groupBy { it.category }
+        val items = mutableListOf<IngredientListItem>()
+        for ((category, groupItems) in grouped) {
+            items.add(IngredientListItem.Header(category, groupItems.size))
+            for (ingredient in groupItems) {
+                items.add(IngredientListItem.Item(ingredient, isLowStock(ingredient)))
+            }
         }
 
         ingredients.value = items

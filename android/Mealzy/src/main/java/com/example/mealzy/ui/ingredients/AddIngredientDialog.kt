@@ -1,90 +1,100 @@
 package com.example.mealzy.ui.ingredients
 
-import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
+import androidx.core.widget.addTextChangedListener
 import com.example.mealzy.R
 import com.example.mealzy.data.model.Ingredient
-import com.example.mealzy.databinding.DialogAddIngredientBinding
+import com.example.mealzy.databinding.BottomSheetAddIngredientBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class AddIngredientDialog(
     private val existingIngredient: Ingredient? = null,
     private val onIngredientSaved: (Ingredient) -> Unit
-) : DialogFragment() {
+) : BottomSheetDialogFragment() {
 
-    private var _binding: DialogAddIngredientBinding? = null
+    private var _binding: BottomSheetAddIngredientBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        _binding = DialogAddIngredientBinding.inflate(layoutInflater)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = BottomSheetAddIngredientBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupUI()
-
-        val title = if (existingIngredient != null) R.string.edit else R.string.add_new_ingredient
-
-        return AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setView(binding.root)
-            .setPositiveButton(R.string.save) { _, _ ->
-                saveIngredient()
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .create()
+        binding.btnSave.setOnClickListener { saveIngredient() }
+        binding.btnCancel.setOnClickListener { dismiss() }
     }
 
     private fun setupUI() {
-        val categories = arrayOf(
-            "Protein", "Vegetables", "Fruits", "Grains",
-            "Dairy", "Condiments", "Spices", "Other"
+        binding.textSheetTitle.setText(
+            if (existingIngredient != null) R.string.edit else R.string.add_new_ingredient
         )
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            categories
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerCategory.adapter = adapter
 
         val units = arrayOf(
             "pieces", "cups", "lbs", "kg", "grams", "oz",
             "liters", "ml", "tbsp", "tsp", "bottles", "cans"
         )
-        val unitAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            units
+        val unitAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, units)
+        binding.actvUnit.setAdapter(unitAdapter)
+        binding.actvUnit.setText(units[0], false)
+
+        val categories = arrayOf(
+            "Protein", "Vegetables", "Fruits", "Grains",
+            "Dairy", "Condiments", "Spices", "Other"
         )
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerUnit.adapter = unitAdapter
+        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
+        binding.actvCategory.setAdapter(categoryAdapter)
+        binding.actvCategory.setText(categories[0], false)
 
         // Pre-fill fields when editing
         existingIngredient?.let { ingredient ->
-            binding.editTextName.setText(ingredient.name)
-            binding.editTextQuantity.setText(ingredient.quantity)
-            val unitIndex = units.indexOf(ingredient.unit)
-            if (unitIndex >= 0) binding.spinnerUnit.setSelection(unitIndex)
-            val categoryIndex = categories.indexOf(ingredient.category)
-            if (categoryIndex >= 0) binding.spinnerCategory.setSelection(categoryIndex)
+            binding.etName.setText(ingredient.name)
+            binding.etQuantity.setText(ingredient.quantity)
+            binding.actvUnit.setText(ingredient.unit, false)
+            binding.actvCategory.setText(ingredient.category, false)
+        }
+
+        // Auto-categorization on name entry (new ingredients only)
+        binding.etName.addTextChangedListener { text ->
+            val suggestion = CategorySuggestions.suggestCategory(text.toString())
+            if (suggestion != null && existingIngredient == null) {
+                binding.actvCategory.setText(suggestion, false)
+            }
         }
     }
 
     private fun saveIngredient() {
-        val name = binding.editTextName.text.toString().trim()
-        val quantity = binding.editTextQuantity.text.toString().trim()
-        val unit = binding.spinnerUnit.selectedItem.toString()
-        val category = binding.spinnerCategory.selectedItem.toString()
+        val name = binding.etName.text.toString().trim()
+        val quantity = binding.etQuantity.text.toString().trim()
+        val unit = binding.actvUnit.text.toString()
+        val category = binding.actvCategory.text.toString()
 
         if (name.isEmpty()) {
-            binding.editTextName.error = "Name is required"
+            binding.tilName.error = getString(R.string.error_name_required)
             return
         }
+        binding.tilName.error = null
 
         if (quantity.isEmpty()) {
-            binding.editTextQuantity.error = "Quantity is required"
+            binding.tilQuantity.error = getString(R.string.error_quantity_required)
             return
         }
+        val quantityDouble = quantity.toDoubleOrNull()
+        if (quantityDouble == null || quantityDouble <= 0.0) {
+            binding.tilQuantity.error = getString(R.string.error_quantity_positive)
+            return
+        }
+        binding.tilQuantity.error = null
 
         val ingredient = if (existingIngredient != null) {
             existingIngredient.copy(name = name, quantity = quantity, unit = unit, category = category)
@@ -93,6 +103,7 @@ class AddIngredientDialog(
         }
 
         onIngredientSaved(ingredient)
+        dismiss()
     }
 
     override fun onDestroyView() {

@@ -80,6 +80,7 @@ class IngredientsFragment : Fragment() {
                     R.id.chip_all -> FilterMode.ALL
                     R.id.chip_available -> FilterMode.AVAILABLE_ONLY
                     R.id.chip_out_of_stock -> FilterMode.OUT_OF_STOCK
+                    R.id.chip_low_stock -> FilterMode.LOW_STOCK
                     else -> FilterMode.ALL
                 }
                 ingredientsViewModel.setFilterMode(selectedMode)
@@ -88,6 +89,10 @@ class IngredientsFragment : Fragment() {
 
         binding.fabAddIngredient.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            showAddIngredientDialog()
+        }
+
+        binding.btnEmptyStateCta.setOnClickListener {
             showAddIngredientDialog()
         }
 
@@ -222,11 +227,45 @@ class IngredientsFragment : Fragment() {
     private fun observeViewModel() {
         ingredientsViewModel.ingredients.observe(viewLifecycleOwner) { items ->
             ingredientsAdapter.submitList(items)
-            val hasItems = items.any { it is IngredientListItem.Item }
-            binding.textNoIngredients.visibility =
-                if (!hasItems) View.VISIBLE else View.GONE
-            binding.recyclerViewIngredients.visibility =
-                if (!hasItems) View.GONE else View.VISIBLE
+        }
+
+        ingredientsViewModel.emptyStateVariant.observe(viewLifecycleOwner) { variant ->
+            if (variant == null) {
+                binding.layoutEmptyState.visibility = View.GONE
+                binding.recyclerViewIngredients.visibility = View.VISIBLE
+            } else {
+                binding.layoutEmptyState.visibility = View.VISIBLE
+                binding.recyclerViewIngredients.visibility = View.GONE
+                when (variant) {
+                    is EmptyStateVariant.NoIngredients -> {
+                        binding.textEmptyTitle.text = getString(R.string.empty_pantry_title)
+                        binding.textEmptySubtitle.text = getString(R.string.empty_pantry_subtitle)
+                        binding.btnEmptyStateCta.visibility = View.VISIBLE
+                    }
+                    is EmptyStateVariant.NoSearchResults -> {
+                        binding.textEmptyTitle.text = getString(R.string.empty_search_title, variant.query)
+                        binding.textEmptySubtitle.text = getString(R.string.empty_search_subtitle)
+                        binding.btnEmptyStateCta.visibility = View.GONE
+                    }
+                    is EmptyStateVariant.NoFilterResults -> {
+                        binding.textEmptyTitle.text = when (variant.filter) {
+                            FilterMode.AVAILABLE_ONLY -> getString(R.string.empty_filter_available_title)
+                            FilterMode.OUT_OF_STOCK -> getString(R.string.empty_filter_out_of_stock_title)
+                            FilterMode.LOW_STOCK -> getString(R.string.empty_filter_low_stock_title)
+                            FilterMode.ALL -> getString(R.string.empty_filter_available_title)
+                        }
+                        binding.textEmptySubtitle.text = getString(R.string.empty_filter_subtitle)
+                        binding.btnEmptyStateCta.visibility = View.GONE
+                    }
+                }
+            }
+        }
+
+        ingredientsViewModel.ingredientCounts.observe(viewLifecycleOwner) { counts ->
+            binding.chipAll.text = getString(R.string.chip_all_count, counts.total)
+            binding.chipAvailable.text = getString(R.string.chip_available_count, counts.available)
+            binding.chipOutOfStock.text = getString(R.string.chip_out_of_stock_count, counts.outOfStock)
+            binding.chipLowStock.text = getString(R.string.chip_low_stock_count, counts.lowStock)
         }
     }
 

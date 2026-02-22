@@ -75,24 +75,66 @@
                     android:layout_height="wrap_content"
                     android:text="@string/out_of_stock" />
 
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_low_stock"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/low_stock" />
+
             </com.google.android.material.chip.ChipGroup>
 
         </HorizontalScrollView>
 
-        <!-- Empty State -->
-        <TextView
-            android:id="@+id/text_no_ingredients"
+        <!-- Empty State Container -->
+        <LinearLayout
+            android:id="@+id/layout_empty_state"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/no_ingredients_found"
             android:gravity="center"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:orientation="vertical"
+            android:padding="16dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips" />
+            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips">
+
+            <ImageView
+                android:id="@+id/image_empty_state"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_local_grocery_store_24"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+            <TextView
+                android:id="@+id/text_empty_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+            <TextView
+                android:id="@+id/text_empty_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_empty_state_cta"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/add_ingredient"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
         <!-- Ingredients RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -119,10 +161,10 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
         android:text="@string/add_ingredient"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/colorOnPrimary"
         android:textStyle="bold"
-        app:icon="@android:drawable/ic_menu_add"
-        app:iconTint="@android:color/white"
+        app:icon="@drawable/ic_add_24"
+        app:iconTint="?attr/colorOnPrimary"
         app:backgroundTint="?attr/colorPrimary"
         android:contentDescription="@string/add_ingredient"
         app:elevation="8dp" />
