@@ -35,16 +35,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients" />
 
+        <!-- Status filter label -->
+        <TextView
+            android:id="@+id/text_status_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/filter_label_status"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:letterSpacing="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView_ingredients" />
+
         <!-- Status Filter Chips (All / Available / Out of Stock / Low Stock) -->
         <HorizontalScrollView
             android:id="@+id/scroll_filter_chips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView_ingredients">
+            app:layout_constraintTop_toBottomOf="@+id/text_status_label">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup_filter"
@@ -86,16 +99,29 @@
 
         </HorizontalScrollView>
 
+        <!-- Category filter label -->
+        <TextView
+            android:id="@+id/text_category_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/filter_label_category"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:letterSpacing="0.04"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips" />
+
         <!-- Category Filter Chips (All / Protein / Vegetables / …) -->
         <HorizontalScrollView
             android:id="@+id/scroll_category_chips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="4dp"
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips">
+            app:layout_constraintTop_toBottomOf="@+id/text_category_label">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup_category"
