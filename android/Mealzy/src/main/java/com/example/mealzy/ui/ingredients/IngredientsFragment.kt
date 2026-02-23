@@ -87,6 +87,23 @@ class IngredientsFragment : Fragment() {
             }
         }
 
+        binding.chipGroupCategory.setOnCheckedStateChangeListener { group, checkedIds ->
+            group.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            val selectedCategory = when (checkedIds.firstOrNull()) {
+                R.id.chip_cat_all -> null
+                R.id.chip_cat_protein -> "Protein"
+                R.id.chip_cat_vegetables -> "Vegetables"
+                R.id.chip_cat_fruits -> "Fruits"
+                R.id.chip_cat_grains -> "Grains"
+                R.id.chip_cat_dairy -> "Dairy"
+                R.id.chip_cat_condiments -> "Condiments"
+                R.id.chip_cat_spices -> "Spices"
+                R.id.chip_cat_other -> "Other"
+                else -> null
+            }
+            ingredientsViewModel.setCategoryFilter(selectedCategory)
+        }
+
         binding.fabAddIngredient.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             showAddIngredientDialog()
@@ -257,15 +274,41 @@ class IngredientsFragment : Fragment() {
                         binding.textEmptySubtitle.text = getString(R.string.empty_filter_subtitle)
                         binding.btnEmptyStateCta.visibility = View.GONE
                     }
+                    is EmptyStateVariant.NoCategoryResults -> {
+                        binding.textEmptyTitle.text =
+                            getString(R.string.empty_category_title, variant.category)
+                        binding.textEmptySubtitle.text = getString(R.string.empty_filter_subtitle)
+                        binding.btnEmptyStateCta.visibility = View.GONE
+                    }
                 }
             }
         }
 
+        // Status chip counts are scoped to the selected category
         ingredientsViewModel.ingredientCounts.observe(viewLifecycleOwner) { counts ->
             binding.chipAll.text = getString(R.string.chip_all_count, counts.total)
             binding.chipAvailable.text = getString(R.string.chip_available_count, counts.available)
             binding.chipOutOfStock.text = getString(R.string.chip_out_of_stock_count, counts.outOfStock)
             binding.chipLowStock.text = getString(R.string.chip_low_stock_count, counts.lowStock)
+        }
+
+        // Category chip counts are always from all ingredients (stable reference)
+        ingredientsViewModel.categoryCounts.observe(viewLifecycleOwner) { counts ->
+            val total = counts.values.sum()
+            binding.chipCatAll.text = getString(R.string.chip_all_count, total)
+            mapOf(
+                binding.chipCatProtein to "Protein",
+                binding.chipCatVegetables to "Vegetables",
+                binding.chipCatFruits to "Fruits",
+                binding.chipCatGrains to "Grains",
+                binding.chipCatDairy to "Dairy",
+                binding.chipCatCondiments to "Condiments",
+                binding.chipCatSpices to "Spices",
+                binding.chipCatOther to "Other"
+            ).forEach { (chip, cat) ->
+                val count = counts[cat] ?: 0
+                chip.text = if (count > 0) "$cat ($count)" else cat
+            }
         }
     }
 

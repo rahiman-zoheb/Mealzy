@@ -35,12 +35,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients" />
 
-        <!-- Filter Chips -->
+        <!-- Status Filter Chips (All / Available / Out of Stock / Low Stock) -->
         <HorizontalScrollView
             android:id="@+id/scroll_filter_chips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +86,92 @@
 
         </HorizontalScrollView>
 
+        <!-- Category Filter Chips (All / Protein / Vegetables / …) -->
+        <HorizontalScrollView
+            android:id="@+id/scroll_category_chips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_all"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/all" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_protein"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Protein" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_vegetables"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vegetables" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_fruits"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fruits" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_grains"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grains" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_dairy"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dairy" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_condiments"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Condiments" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_spices"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Spices" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cat_other"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
         <!-- Empty State Container -->
         <LinearLayout
             android:id="@+id/layout_empty_state"
@@ -98,7 +184,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips">
+            app:layout_constraintTop_toBottomOf="@+id/scroll_category_chips">
 
             <ImageView
                 android:id="@+id/image_empty_state"
@@ -142,13 +228,13 @@
             android:layoutAnimation="@anim/layout_slide_in_bottom"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:clipToPadding="false"
             android:paddingBottom="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scroll_filter_chips"
+            app:layout_constraintTop_toBottomOf="@+id/scroll_category_chips"
             tools:listitem="@layout/item_ingredient" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

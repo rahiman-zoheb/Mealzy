@@ -25,6 +25,7 @@ sealed class EmptyStateVariant {
     object NoIngredients : EmptyStateVariant()
     data class NoSearchResults(val query: String) : EmptyStateVariant()
     data class NoFilterResults(val filter: FilterMode) : EmptyStateVariant()
+    data class NoCategoryResults(val category: String) : EmptyStateVariant()
 }
 
 class IngredientsViewModel(application: Application) : AndroidViewModel(application) {
@@ -38,10 +39,19 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
     private val _filterMode = MutableLiveData<FilterMode>(FilterMode.ALL)
     val filterMode: LiveData<FilterMode> = _filterMode
 
+    // null = show all categories
+    private val _categoryFilter = MutableLiveData<String?>(null)
+    val categoryFilter: LiveData<String?> = _categoryFilter
+
     val ingredients = MediatorLiveData<List<IngredientListItem>>()
 
+    // Status chip counts — reflect the active category filter so counts are contextual
     private val _ingredientCounts = MutableLiveData<IngredientCounts>(IngredientCounts(0, 0, 0, 0))
     val ingredientCounts: LiveData<IngredientCounts> = _ingredientCounts
+
+    // Category chip counts — always from all ingredients, stable reference
+    private val _categoryCounts = MutableLiveData<Map<String, Int>>(emptyMap())
+    val categoryCounts: LiveData<Map<String, Int>> = _categoryCounts
 
     private val _emptyStateVariant = MutableLiveData<EmptyStateVariant?>()
     val emptyStateVariant: LiveData<EmptyStateVariant?> = _emptyStateVariant
@@ -59,19 +69,26 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun setupFiltering() {
-        ingredients.addSource(allIngredientsSource) {
-            updateIngredientCounts(it ?: emptyList())
+        ingredients.addSource(allIngredientsSource) { list ->
+            updateCategoryCounts(list ?: emptyList())
             updateFilteredIngredients()
         }
         ingredients.addSource(_searchQuery) { updateFilteredIngredients() }
         ingredients.addSource(_filterMode) { updateFilteredIngredients() }
+        ingredients.addSource(_categoryFilter) { updateFilteredIngredients() }
     }
 
-    private fun updateIngredientCounts(allItems: List<Ingredient>) {
-        val total = allItems.size
-        val available = allItems.count { it.isAvailable }
-        val outOfStock = allItems.count { !it.isAvailable }
-        val lowStock = allItems.count { isLowStock(it) && it.isAvailable }
+    // Category counts use ALL ingredients — stable, not affected by status or search filter
+    private fun updateCategoryCounts(allItems: List<Ingredient>) {
+        _categoryCounts.value = allItems.groupBy { it.category }.mapValues { it.value.size }
+    }
+
+    // Status counts are scoped to the active category so they stay meaningful
+    private fun updateIngredientCounts(scopedItems: List<Ingredient>) {
+        val total = scopedItems.size
+        val available = scopedItems.count { it.isAvailable }
+        val outOfStock = scopedItems.count { !it.isAvailable }
+        val lowStock = scopedItems.count { isLowStock(it) && it.isAvailable }
         _ingredientCounts.value = IngredientCounts(total, available, outOfStock, lowStock)
     }
 
@@ -94,13 +111,18 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
         val allItems = allIngredientsSource.value ?: emptyList()
         val query = _searchQuery.value ?: ""
         val mode = _filterMode.value ?: FilterMode.ALL
+        val cat = _categoryFilter.value
 
-        var filtered = allItems
+        // Apply category filter first; status counts are scoped to this subset
+        val categoryScoped = if (cat != null) allItems.filter { it.category == cat } else allItems
+        updateIngredientCounts(categoryScoped)
 
-        if (query.isNotEmpty()) {
-            filtered = filtered.filter { it.name.contains(query, ignoreCase = true) }
-        }
+        // Apply search on top of category scope
+        var filtered = if (query.isNotEmpty()) {
+            categoryScoped.filter { it.name.contains(query, ignoreCase = true) }
+        } else categoryScoped
 
+        // Apply status filter
         filtered = when (mode) {
             FilterMode.AVAILABLE_ONLY -> filtered.filter { it.isAvailable }
             FilterMode.OUT_OF_STOCK -> filtered.filter { !it.isAvailable }
@@ -114,6 +136,7 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
             when {
                 allItems.isEmpty() -> EmptyStateVariant.NoIngredients
                 query.isNotEmpty() -> EmptyStateVariant.NoSearchResults(query)
+                cat != null -> EmptyStateVariant.NoCategoryResults(cat)
                 else -> EmptyStateVariant.NoFilterResults(mode)
             }
         } else null
@@ -136,6 +159,10 @@ class IngredientsViewModel(application: Application) : AndroidViewModel(applicat
 
     fun setFilterMode(mode: FilterMode) {
         _filterMode.value = mode
+    }
+
+    fun setCategoryFilter(category: String?) {
+        _categoryFilter.value = category
     }
 
     fun addIngredient(ingredient: Ingredient) {

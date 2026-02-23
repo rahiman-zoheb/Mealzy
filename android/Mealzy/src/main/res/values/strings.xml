@@ -74,6 +74,7 @@
     <string name="empty_filter_out_of_stock_title">Nothing is out of stock</string>
     <string name="empty_filter_low_stock_title">No low-stock items</string>
     <string name="empty_filter_subtitle">Change the filter to see more</string>
+    <string name="empty_category_title">No %s ingredients</string>
     
     <!-- Meal Plan Screen -->
     <string name="weekly_meal_plan">Weekly Meal Plan</string>
