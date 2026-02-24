@@ -24,16 +24,32 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Search -->
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView_ingredients"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_search_ingredients"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/search_background"
-            app:queryHint="@string/search_ingredients"
+            android:layout_marginTop="12dp"
+            android:hint="@string/search_ingredients"
+            app:startIconDrawable="@drawable/ic_search_24"
+            app:startIconTint="?attr/colorOnSurfaceVariant"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients" />
+            app:layout_constraintTop_toBottomOf="@+id/text_my_ingredients">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_search_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:inputType="text|textNoSuggestions"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Status filter label -->
         <TextView
@@ -46,7 +62,7 @@
             android:textColor="?attr/colorOnSurfaceVariant"
             android:letterSpacing="0.04"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView_ingredients" />
+            app:layout_constraintTop_toBottomOf="@+id/til_search_ingredients" />
 
         <!-- Status Filter Chips (All / Available / Out of Stock / Low Stock) -->
         <HorizontalScrollView

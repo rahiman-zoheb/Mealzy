@@ -8,7 +8,7 @@ import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
+import androidx.core.widget.addTextChangedListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -65,13 +65,9 @@ class IngredientsFragment : Fragment() {
             adapter = ingredientsAdapter
         }
 
-        binding.searchViewIngredients.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?) = false
-            override fun onQueryTextChange(newText: String?): Boolean {
-                ingredientsViewModel.setSearchQuery(newText ?: "")
-                return true
-            }
-        })
+        binding.etSearchIngredients.addTextChangedListener { text ->
+            ingredientsViewModel.setSearchQuery(text?.toString() ?: "")
+        }
 
         binding.chipGroupFilter.setOnCheckedStateChangeListener { group, checkedIds ->
             group.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)

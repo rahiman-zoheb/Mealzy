@@ -5,7 +5,7 @@ import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -59,17 +59,9 @@ class RecipesFragment : Fragment() {
         }
 
         // Setup search
-        binding.searchViewRecipes.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { recipesViewModel.searchRecipes(it) }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                recipesViewModel.searchRecipes(newText ?: "")
-                return true
-            }
-        })
+        binding.etSearchRecipes.addTextChangedListener { text ->
+            recipesViewModel.searchRecipes(text?.toString() ?: "")
+        }
 
         // Setup FAB
         binding.fabAddRecipe.setOnClickListener {
